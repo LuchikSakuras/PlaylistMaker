@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+        <Button
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/twenty_four_dp"
+            android:backgroundTint="@color/white"
+            android:paddingBottom = "@dimen/twelve"
+            android:paddingTop = "@dimen/ten"
+            android:gravity = "start|center_vertical"
+            android:text="@string/settings"
+            android:textColor="@color/black"
+            android:textSize="@dimen/twenty_two_sp"
+            android:textStyle="bold"
+            app:icon= "@drawable/arrow_back"
+            app:iconGravity="textStart"
+            app:iconTint="@color/black"
+            app:iconPadding="@dimen/twelve"
+            />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/zero_dp"
+            android:layout_marginTop="@dimen/zero_dp"
+            android:backgroundTint="@color/white"
+            android:paddingBottom = "@dimen/eighteen_dp"
+            android:paddingTop="@dimen/nineteen_dp"
+            android:gravity = "start|center_vertical"
+            android:text="@string/dark_theme"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            app:icon= "@drawable/control"
+            app:iconGravity="end"
+            app:iconTint="@color/grey"
+            app:iconPadding="@dimen/eight_dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/zero_dp"
+            android:layout_marginTop="@dimen/zero_dp"
+            android:backgroundTint="@color/white"
+            android:paddingBottom = "@dimen/eighteen_dp"
+            android:paddingTop="@dimen/nineteen_dp"
+            android:gravity = "start|center_vertical"
+            android:text="@string/share_the_app"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            app:icon= "@drawable/share"
+            app:iconGravity="end"
+            app:iconTint="@color/grey"
+            app:iconPadding="@dimen/eight_dp"
+            />
+
+        <Button
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/zero_dp"
+            android:layout_marginTop="@dimen/zero_dp"
+            android:backgroundTint="@color/white"
+            android:paddingBottom = "@dimen/eighteen_dp"
+            android:paddingTop="@dimen/nineteen_dp"
+            android:gravity = "start|center_vertical"
+            android:text="@string/user_agreement"
+            android:textSize="@dimen/sixteen_sp"
+            android:textColor="@color/black"
+            app:icon= "@drawable/arrow_forward"
+            app:iconGravity="end"
+            app:iconTint="@color/grey"
+            app:iconPadding="@dimen/eight_dp"/>
+    </LinearLayout>
+
+</LinearLayout>
