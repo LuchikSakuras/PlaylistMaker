@@ -4,154 +4,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/setting_background_color">
 
     <LinearLayout
         android:id="@+id/buttonBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
         android:orientation="horizontal"
-        android:gravity = "start|center_vertical"
-        tools:ignore="UselessParent">
+        tools:ignore="UseCompoundDrawables,UselessParent">
 
         <ImageView
-            android:layout_width="@dimen/forty_eight_dp"
-            android:layout_height="@dimen/forty_eight_dp"
-            android:layout_marginStart="@dimen/four_dp"
-            android:layout_marginBottom="@dimen/four_dp"
-            android:layout_marginTop="@dimen/four_dp"
-            android:src= "@drawable/arrow_back"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/twelve_dp"
-            tools:ignore="Suspicious0dp"
-            app:tint="@color/black" />
+            style="@style/backButtonIconsStyle"
+            tools:ignore="Suspicious0dp"/>
 
         <TextView
+            style="@style/MessageTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/twelve_dp"
+            android:layout_marginStart="@dimen/eight_dp"
             android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/twenty_two_sp"
             android:textAllCaps="false"
-            />
+            android:textFontWeight = "500"
+            android:textSize="@dimen/twenty_two_sp"
+            tools:ignore="ExtraText" />
     </LinearLayout>
 
     <LinearLayout
-    android:id="@+id/buttonDarkTheme"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
+        android:id="@+id/buttonDarkTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         tools:ignore="ExtraText">
+
         <TextView
-            android:layout_width="@dimen/zero_dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sixteen_sp"
-            android:gravity = "start"
-            android:layout_marginTop="@dimen/twenty_one_dp"
-            android:layout_marginBottom="@dimen/twenty_one_dp"
-            android:layout_marginStart="@dimen/sixteen_dp"
-            />
+            style="@style/settingsButtonTextStyle"
+            android:text="@string/dark_theme" />
 
         <ImageView
+            style="@style/settingsButtonIconsStyle"
             android:layout_width="@dimen/thirty_five_dp"
             android:layout_height="@dimen/eighteen_dp"
             android:layout_marginEnd="@dimen/twenty_two_dp"
-            android:src="@drawable/control"
-            app:iconTint="@color/grey"
-            />
+            android:src="?attr/switch_icon"
+            app:tint = "?attr/icon_switch_color"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonShareTheApp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         tools:ignore="ExtraText">
+
         <TextView
-            android:layout_width="@dimen/zero_dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/share_the_app"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sixteen_sp"
-            android:gravity = "start"
-            android:layout_marginTop="@dimen/twenty_one_dp"
-            android:layout_marginBottom="@dimen/twenty_one_dp"
-            android:layout_marginStart="@dimen/sixteen_dp"
-            />
+            style="@style/settingsButtonTextStyle"
+            android:text="@string/share_the_app" />
 
         <ImageView
-            android:layout_width="@dimen/twenty_four_dp"
-            android:layout_height="@dimen/twenty_four_dp"
-            android:layout_marginEnd="@dimen/eighteen_dp"
-            android:src="@drawable/share"
-            app:iconTint="@color/grey"
-            />
+            style="@style/settingsButtonIconsStyle"
+            android:src="@drawable/share"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonSupport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         tools:ignore="ExtraText">
+
         <TextView
-            android:layout_width="@dimen/zero_dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/support"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sixteen_sp"
-            android:gravity = "start"
-            android:layout_marginTop="@dimen/twenty_one_dp"
-            android:layout_marginBottom="@dimen/twenty_one_dp"
-            android:layout_marginStart="@dimen/sixteen_dp"
-            />
+            style="@style/settingsButtonTextStyle"
+            android:text="@string/support" />
 
         <ImageView
-            android:layout_width="@dimen/twenty_four_dp"
-            android:layout_height="@dimen/twenty_four_dp"
-            android:layout_marginEnd="@dimen/eighteen_dp"
-            android:src="@drawable/support"
-            app:iconTint="@color/grey"
-            />
+            style="@style/settingsButtonIconsStyle"
+            android:src="@drawable/support"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonArrowForward"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         tools:ignore="ExtraText">
+
         <TextView
-            android:layout_width="@dimen/zero_dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/user_agreement"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sixteen_sp"
-            android:gravity = "start"
-            android:layout_marginTop="@dimen/twenty_one_dp"
-            android:layout_marginBottom="@dimen/twenty_one_dp"
-            android:layout_marginStart="@dimen/sixteen_dp"
-            />
+            style="@style/settingsButtonTextStyle"
+            android:text="@string/user_agreement" />
 
         <ImageView
-            android:layout_width="@dimen/twenty_four_dp"
-            android:layout_height="@dimen/twenty_four_dp"
-            android:layout_marginEnd="@dimen/eighteen_dp"
-            android:src="@drawable/arrow_forward"
-            app:iconTint="@color/grey"
-            />
+            style="@style/settingsButtonIconsStyle"
+            android:src="@drawable/arrow_forward"/>
     </LinearLayout>
 
 </LinearLayout>

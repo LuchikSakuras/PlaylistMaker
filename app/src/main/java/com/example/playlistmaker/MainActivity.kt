@@ -2,12 +2,14 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("WrongViewCast", "MissingInflatedId")
@@ -18,12 +20,11 @@ class MainActivity : AppCompatActivity() {
         val buttonMediaLibrary: Button = findViewById<Button>(R.id.buttonMediaLibrary)
         val buttonSettings: Button = findViewById<Button>(R.id.buttonSettings)
 
-        buttonSearch.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                val displayIntent = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(displayIntent)
-            }
-        })
+
+        buttonSearch.setOnClickListener {
+            val displayIntent = Intent(this@MainActivity, SearchActivity::class.java)
+            startActivity(displayIntent)
+        }
 
         buttonMediaLibrary.setOnClickListener {
             val displayIntent = Intent(this@MainActivity, MediaLibraryActivity::class.java)

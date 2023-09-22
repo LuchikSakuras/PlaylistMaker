@@ -1,9 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SearchActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="?attr/setting_background_color">
+
+    <LinearLayout
+        android:id="@+id/buttonBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables,UselessParent">
+
+        <ImageView
+            style="@style/backButtonIconsStyle"
+            tools:ignore="Suspicious0dp"/>
+
+        <TextView
+            style="@style/MessageTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/eight_dp"
+            android:text="@string/search_text"
+            android:textAllCaps="false"
+            android:textFontWeight = "500"
+            android:textSize="@dimen/twenty_two_sp"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_marginTop="@dimen/eight_dp"
+        android:layout_marginStart="@dimen/sixteen_dp"
+        android:layout_marginEnd="@dimen/sixteen_dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@drawable/round_corner"
+        tools:ignore="ExtraText">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:layout_marginBottom="@dimen/ten_dp"
+                android:layout_marginStart="@dimen/twelve_dp"
+                android:src="@drawable/search_icon"
+                app:tint="?attr/search_color"/>
+
+            <EditText
+                android:id="@+id/inputEditText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/eight_dp"
+                android:textSize="@dimen/sixteen_sp"
+                android:background="@null"
+                android:lines="1"
+                android:hint="@string/search_text"
+                android:inputType="text"
+                android:fontFamily="@font/ys_text_regular"
+                android:textFontWeight="400"
+                android:textColor="@color/black"
+                android:textColorHint ="?attr/search_color"/>
+
+            <ImageView
+                android:id="@+id/clearIcon"
+                android:layout_marginEnd="@dimen/six_dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:src="@drawable/close"
+                app:tint="?attr/search_color"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
