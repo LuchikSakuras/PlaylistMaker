@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/buttonBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity = "start|center_vertical"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:layout_width="@dimen/forty_eight_dp"
+            android:layout_height="@dimen/forty_eight_dp"
+            android:layout_marginStart="@dimen/four_dp"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_marginTop="@dimen/four_dp"
+            android:src= "@drawable/arrow_back"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/twelve_dp"
+            tools:ignore="Suspicious0dp"
+            app:tint="@color/black" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/twelve_dp"
+            android:text="@string/settings"
+            android:textColor="@color/black"
+            android:textSize="@dimen/twenty_two_sp"
+            android:textAllCaps="false"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+    android:id="@+id/buttonDarkTheme"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+        tools:ignore="ExtraText">
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/dark_theme"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            android:gravity = "start"
+            android:layout_marginTop="@dimen/twenty_one_dp"
+            android:layout_marginBottom="@dimen/twenty_one_dp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/thirty_five_dp"
+            android:layout_height="@dimen/eighteen_dp"
+            android:layout_marginEnd="@dimen/twenty_two_dp"
+            android:src="@drawable/control"
+            app:iconTint="@color/grey"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonShareTheApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        tools:ignore="ExtraText">
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/share_the_app"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            android:gravity = "start"
+            android:layout_marginTop="@dimen/twenty_one_dp"
+            android:layout_marginBottom="@dimen/twenty_one_dp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="@dimen/twenty_four_dp"
+            android:layout_marginEnd="@dimen/eighteen_dp"
+            android:src="@drawable/share"
+            app:iconTint="@color/grey"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonSupport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        tools:ignore="ExtraText">
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/support"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            android:gravity = "start"
+            android:layout_marginTop="@dimen/twenty_one_dp"
+            android:layout_marginBottom="@dimen/twenty_one_dp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="@dimen/twenty_four_dp"
+            android:layout_marginEnd="@dimen/eighteen_dp"
+            android:src="@drawable/support"
+            app:iconTint="@color/grey"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonArrowForward"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        tools:ignore="ExtraText">
+        <TextView
+            android:layout_width="@dimen/zero_dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/user_agreement"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            android:gravity = "start"
+            android:layout_marginTop="@dimen/twenty_one_dp"
+            android:layout_marginBottom="@dimen/twenty_one_dp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/twenty_four_dp"
+            android:layout_height="@dimen/twenty_four_dp"
+            android:layout_marginEnd="@dimen/eighteen_dp"
+            android:src="@drawable/arrow_forward"
+            app:iconTint="@color/grey"
+            />
+    </LinearLayout>
+
+</LinearLayout>
