@@ -8,7 +8,7 @@
     android:background="?attr/setting_background_color">
 
     <LinearLayout
-        android:id="@+id/buttonBack"
+        android:id="@+id/button_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
@@ -16,23 +16,22 @@
         tools:ignore="UseCompoundDrawables,UselessParent">
 
         <ImageView
-            style="@style/backButtonIconsStyle"
-            tools:ignore="Suspicious0dp"/>
+            style="@style/backButtonIconsStyle"/>
 
         <TextView
             style="@style/MessageTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_dp"
+            android:layout_marginStart="@dimen/dp_8"
             android:text="@string/settings"
             android:textAllCaps="false"
             android:textFontWeight = "500"
-            android:textSize="@dimen/twenty_two_sp"
+            android:textSize="@dimen/sp_22"
             tools:ignore="ExtraText" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/buttonDarkTheme"
+        android:id="@+id/button_dark_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -45,15 +44,15 @@
 
         <ImageView
             style="@style/settingsButtonIconsStyle"
-            android:layout_width="@dimen/thirty_five_dp"
-            android:layout_height="@dimen/eighteen_dp"
-            android:layout_marginEnd="@dimen/twenty_two_dp"
+            android:layout_width="@dimen/dp_35"
+            android:layout_height="@dimen/dp_18"
+            android:layout_marginEnd="@dimen/dp_22"
             android:src="?attr/switch_icon"
             app:tint = "?attr/icon_switch_color"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/buttonShareTheApp"
+        android:id="@+id/button_share_the_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -70,7 +69,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/buttonSupport"
+        android:id="@+id/button_support"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -87,7 +86,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/buttonArrowForward"
+        android:id="@+id/button_arrow_forward"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"

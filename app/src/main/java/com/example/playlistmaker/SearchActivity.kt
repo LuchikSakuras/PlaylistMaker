@@ -14,9 +14,8 @@ import android.widget.LinearLayout
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchEditText: EditText
-    companion object {
-        const val SEARCH_TEXT = "searchText"
-    }
+    private var searchText: String = ""
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val searchText = searchEditText.text.toString()
@@ -33,8 +32,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        searchEditText = findViewById<EditText>(R.id.inputEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        searchEditText = findViewById<EditText>(R.id.input_edit_text)
+        val clearButton = findViewById<ImageView>(R.id.clear_icon)
         val currentView = this.window.decorView.rootView
 
 
@@ -44,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
-        val buttonBack: LinearLayout = findViewById<LinearLayout>(R.id.buttonBack)
+        val buttonBack: LinearLayout = findViewById<LinearLayout>(R.id.button_back)
         buttonBack.setOnClickListener {
             finish()
         }
@@ -55,25 +54,12 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
         }
 
-        fun clearButtonVisibility(s: CharSequence?): Int {
-            return if (s.isNullOrEmpty()) {
-                View.GONE
-            } else {
-                View.VISIBLE }
-        }
-
-        fun isPrime(number: Int): Boolean {
-            for (i in 2..number / 2) {
-                if (number % i == 0) {
-                    return false } }
-            return true }
 
         searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchText = s.toString()
                 if (s.isNullOrEmpty()) {
                     clearButton.visibility = View.GONE
                 } else {
@@ -86,4 +72,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    companion object {
+        const val SEARCH_TEXT = "searchText"
+    }
 }

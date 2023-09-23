@@ -23,11 +23,11 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val buttonBack: LinearLayout = findViewById<LinearLayout>(R.id.buttonBack)
-        val buttonShareTheApp: LinearLayout = findViewById<LinearLayout>(R.id.buttonShareTheApp)
-        val buttonSupport: LinearLayout = findViewById<LinearLayout>(R.id.buttonSupport)
-        val buttonArrowForward: LinearLayout = findViewById<LinearLayout>(R.id.buttonArrowForward)
-        val buttonDarkTheme: LinearLayout = findViewById<LinearLayout>(R.id.buttonDarkTheme)
+        val buttonBack: LinearLayout = findViewById<LinearLayout>(R.id.button_back)
+        val buttonShareTheApp: LinearLayout = findViewById<LinearLayout>(R.id.button_share_the_app)
+        val buttonSupport: LinearLayout = findViewById<LinearLayout>(R.id.button_support)
+        val buttonArrowForward: LinearLayout = findViewById<LinearLayout>(R.id.button_arrow_forward)
+        val buttonDarkTheme: LinearLayout = findViewById<LinearLayout>(R.id.button_dark_theme)
 
 
         buttonBack.setOnClickListener {
