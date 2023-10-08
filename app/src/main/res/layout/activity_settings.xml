@@ -2,40 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/setting_background_color">
+    style="@style/primaryLinerStyle"
+    >
 
     <LinearLayout
         android:id="@+id/button_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/secondaryLinerStyle"
         android:gravity="start|center_vertical"
-        android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables,UselessParent">
 
         <ImageView
             style="@style/backButtonIconsStyle"/>
 
         <TextView
-            style="@style/MessageTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/mainScreenTextStyle"
             android:layout_marginStart="@dimen/dp_8"
             android:text="@string/settings"
-            android:textAllCaps="false"
-            android:textFontWeight = "500"
-            android:textSize="@dimen/sp_22"
             tools:ignore="ExtraText" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/button_dark_theme"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        style="@style/secondaryLinerStyle"
         tools:ignore="ExtraText">
 
         <TextView
@@ -53,10 +41,7 @@
 
     <LinearLayout
         android:id="@+id/button_share_the_app"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        style="@style/secondaryLinerStyle"
         tools:ignore="ExtraText">
 
         <TextView
@@ -70,10 +55,7 @@
 
     <LinearLayout
         android:id="@+id/button_support"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        style="@style/secondaryLinerStyle"
         tools:ignore="ExtraText">
 
         <TextView
@@ -87,10 +69,7 @@
 
     <LinearLayout
         android:id="@+id/button_arrow_forward"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        style="@style/secondaryLinerStyle"
         tools:ignore="ExtraText">
 
         <TextView
