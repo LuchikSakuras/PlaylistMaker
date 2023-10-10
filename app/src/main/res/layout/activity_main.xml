@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/primaryLinerStyle"
-    android:background="?attr/main_background_color">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/main_background_color"
+    android:orientation="vertical">
 
-        <TextView
-            style ="@style/mainScreenTextStyle"
-            android:paddingTop="@dimen/dp_10"
-            android:padding="@dimen/dp_12"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            />
+    <TextView
+        style="@style/mainScreenTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_10"
+        android:text="@string/app_name"
+        android:textColor="@color/white" />
 
     <LinearLayout
-        style="@style/primaryLinerStyle"
-        android:background="@null"
-        android:padding="@dimen/dp_16"
-        >
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_16">
 
         <Button
-            style ="@style/mainButtonsStyle"
             android:id="@+id/button_search"
+            style="@style/mainButtonsStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_8"
+            android:layout_weight="1"
             android:text="@string/search"
-            app:icon= "@drawable/light_mode"
-            />
-
+            app:icon="@drawable/light_mode" />
 
         <Button
-            style ="@style/mainButtonsStyle"
             android:id="@+id/button_media_library"
+            style="@style/mainButtonsStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_weight="1"
             android:text="@string/media_library"
-            app:icon="@drawable/music"/>
+            app:icon="@drawable/music" />
 
         <Button
-            style ="@style/mainButtonsStyle"
             android:id="@+id/button_settings"
+            style="@style/mainButtonsStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/dp_12"
+            android:layout_weight="1"
             android:text="@string/settings"
-            app:icon= "@drawable/setting"
-            android:layout_marginBottom="@dimen/dp_12"/>
+            app:icon="@drawable/setting" />
+
     </LinearLayout>
+
 </LinearLayout>

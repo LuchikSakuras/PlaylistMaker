@@ -25,11 +25,16 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var adapter: TrackAdapter
     private lateinit var buttonBack: LinearLayout
     private var searchText: String = ""
-    private val urlNirvana = "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
-    private val urlJackson = "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
-    private val urlGees = "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
-    private val urlZeppelin = "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
-    private val urlRoses = "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc4e6-3d8f-3ab7-7a12-95b7f2ee5e0e/UMG_cvrart_00602537535237_01_RGB72_1800x1800_13UAAIM74565.jpg/100x100bb.jpg"
+    private val urlNirvana =
+        "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
+    private val urlJackson =
+        "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
+    private val urlGees =
+        "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
+    private val urlZeppelin =
+        "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
+    private val urlRoses =
+        "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc4e6-3d8f-3ab7-7a12-95b7f2ee5e0e/UMG_cvrart_00602537535237_01_RGB72_1800x1800_13UAAIM74565.jpg/100x100bb.jpg"
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -54,7 +59,7 @@ class SearchActivity : AppCompatActivity() {
         buttonBack = findViewById(R.id.button_back)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val currentView = this.window.decorView.rootView
-        val artworkUrl100: ImageView =findViewById(R.id.artworkUrl100)
+        val artworkUrl100: ImageView = findViewById(R.id.artworkUrl100)
 
         Glide.with(applicationContext).load(urlNirvana).into(artworkUrl100)
         Glide.with(applicationContext).load(urlJackson).into(artworkUrl100)
@@ -64,11 +69,46 @@ class SearchActivity : AppCompatActivity() {
 
 
         val tracksList = ArrayList<Track>()
-        tracksList.add(Track(resources.getString(R.string.track_name_nirvana), resources.getString(R.string.artist_name_nirvana), resources.getString(R.string.track_time_nirvana), urlNirvana))
-        tracksList.add(Track(resources.getString(R.string.track_name_jackson), resources.getString(R.string.artist_name_jackson), resources.getString(R.string.track_time_jackson), urlJackson))
-        tracksList.add(Track(resources.getString(R.string.track_name_gees), resources.getString(R.string.artist_name_gees), resources.getString(R.string.track_time_gees), urlGees))
-        tracksList.add(Track(resources.getString(R.string.track_name_zeppelin), resources.getString(R.string.artist_name_zeppelin), resources.getString(R.string.track_time_zeppelin), urlZeppelin))
-        tracksList.add(Track(resources.getString(R.string.track_name_roses), resources.getString(R.string.artist_name_roses), resources.getString(R.string.track_time_roses), urlRoses))
+        tracksList.add(
+            Track(
+                resources.getString(R.string.track_name_nirvana),
+                resources.getString(R.string.artist_name_nirvana),
+                resources.getString(R.string.track_time_nirvana),
+                urlNirvana
+            )
+        )
+        tracksList.add(
+            Track(
+                resources.getString(R.string.track_name_jackson),
+                resources.getString(R.string.artist_name_jackson),
+                resources.getString(R.string.track_time_jackson),
+                urlJackson
+            )
+        )
+        tracksList.add(
+            Track(
+                resources.getString(R.string.track_name_gees),
+                resources.getString(R.string.artist_name_gees),
+                resources.getString(R.string.track_time_gees),
+                urlGees
+            )
+        )
+        tracksList.add(
+            Track(
+                resources.getString(R.string.track_name_zeppelin),
+                resources.getString(R.string.artist_name_zeppelin),
+                resources.getString(R.string.track_time_zeppelin),
+                urlZeppelin
+            )
+        )
+        tracksList.add(
+            Track(
+                resources.getString(R.string.track_name_roses),
+                resources.getString(R.string.artist_name_roses),
+                resources.getString(R.string.track_time_roses),
+                urlRoses
+            )
+        )
         adapter = TrackAdapter(tracksList)
         recyclerView.adapter = adapter
 
@@ -86,7 +126,8 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             searchEditText.setText("")
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
         }
 
@@ -113,7 +154,6 @@ class SearchActivity : AppCompatActivity() {
     }
 }
 
-data class Track(val trackName: String, val artistName: String, val trackTime: String, val artworkUrl100: String)
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -138,12 +178,12 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(2))
             .into(artworkUrl100View)
-   }
+    }
 }
 
 class TrackAdapter(
-    private val tracksList: ArrayList<Track>
-) : RecyclerView.Adapter<TrackViewHolder> () {
+    private val tracksList: ArrayList<Track>,
+) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
