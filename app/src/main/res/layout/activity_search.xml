@@ -59,19 +59,14 @@
 
             <EditText
                 android:id="@+id/input_edit_text"
+                style="@style/searchEditTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_weight="1"
-                android:background="@null"
-                android:fontFamily="@font/ys_text_regular"
                 android:hint="@string/search_text"
                 android:inputType="text"
-                android:lines="1"
-                android:textColor="@color/black"
-                android:textColorHint="?attr/search_color"
-                android:textFontWeight="400"
-                android:textSize="@dimen/sp_16" />
+                android:lines="1" />
 
             <ImageView
                 android:id="@+id/clear_icon"

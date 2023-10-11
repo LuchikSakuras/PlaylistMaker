@@ -30,9 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_14"
-            android:layout_marginBottom="@dimen/dp_0"
-            android:textColor="?attr/text_color"
-            android:textSize="@dimen/sp_16" />
+            android:layout_marginBottom="@dimen/dp_0" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -41,7 +39,7 @@
 
             <TextView
                 android:id="@+id/artistName"
-                style="@style/trackTextStyle"
+                style="@style/trackInfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -55,7 +53,7 @@
 
             <TextView
                 android:id="@+id/trackTime"
-                style="@style/trackTextStyle"
+                style="@style/trackInfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_1"
