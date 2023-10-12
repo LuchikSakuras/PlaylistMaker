@@ -23,11 +23,11 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val buttonBack: LinearLayout = findViewById<LinearLayout>(R.id.button_back)
-        val buttonShareTheApp: LinearLayout = findViewById<LinearLayout>(R.id.button_share_the_app)
-        val buttonSupport: LinearLayout = findViewById<LinearLayout>(R.id.button_support)
-        val buttonArrowForward: LinearLayout = findViewById<LinearLayout>(R.id.button_arrow_forward)
-        val buttonDarkTheme: LinearLayout = findViewById<LinearLayout>(R.id.button_dark_theme)
+        val buttonBack: LinearLayout = findViewById(R.id.button_back)
+        val buttonShareTheApp: LinearLayout = findViewById(R.id.button_share_the_app)
+        val buttonSupport: LinearLayout = findViewById(R.id.button_support)
+        val buttonArrowForward: LinearLayout = findViewById(R.id.button_arrow_forward)
+        val buttonDarkTheme: LinearLayout = findViewById(R.id.button_dark_theme)
 
 
         buttonBack.setOnClickListener {
@@ -64,9 +64,9 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(arrowForwardIntent)
         }
 
-        buttonDarkTheme.setOnClickListener{
+        buttonDarkTheme.setOnClickListener {
             currentTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            when (currentTheme){
+            when (currentTheme) {
                 Configuration.UI_MODE_NIGHT_NO -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 }

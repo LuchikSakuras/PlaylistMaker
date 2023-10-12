@@ -1,18 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <attr name="text_color"/>
-    <attr name="setting_background_color"/>
-    <attr name="icon_back_color"/>
-    <attr name="icon_switch_color"/>
-    <attr name="icon_color"/>
-    <attr name="main_background_color"/>
-    <attr name="switch_icon"/>
-    <attr name="search_color"/>
-    <attr name="round_corner_color"/>
+    <attr name="text_color" />
+    <attr name="text_info_color" />
+    <attr name="setting_background_color" />
+    <attr name="icon_back_color" />
+    <attr name="icon_switch_color" />
+    <attr name="icon_color" />
+    <attr name="main_background_color" />
+    <attr name="switch_icon" />
+    <attr name="search_color" />
+    <attr name="round_corner_color" />
 
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="switch_icon">@drawable/control</item>
         <item name="text_color">@color/black</item>
+        <item name="text_info_color">@color/grey</item>
         <item name="setting_background_color">@color/white</item>
         <item name="main_background_color">@color/blue</item>
         <item name="icon_back_color">@color/black</item>
