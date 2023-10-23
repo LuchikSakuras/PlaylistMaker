@@ -13,19 +13,8 @@
     <string name="support_title">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="link_arrow_forward">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="track_name_nirvana">Smells Like Teen Spirit</string>
-    <string name="track_name_jackson">Billie Jean</string>
-    <string name="track_name_gees">Stayin\' Alive</string>
-    <string name="track_name_zeppelin">Whole Lotta Love</string>
-    <string name="track_name_roses">Smells Like Teen Spirit</string>
-    <string name="artist_name_nirvana">Nirvana</string>
-    <string name="artist_name_jackson">Michael Jackson</string>
-    <string name="artist_name_gees">Bee Gees</string>
-    <string name="artist_name_zeppelin">Led Zeppelin</string>
-    <string name="artist_name_roses">Guns N\' Roses</string>
-    <string name="track_time_nirvana">5:01</string>
-    <string name="track_time_jackson">4:35</string>
-    <string name="track_time_gees">4:10</string>
-    <string name="track_time_zeppelin">5:33</string>
-    <string name="track_time_roses">5:03</string>
+    <string name="update">Обновить</string>
+    <string name="nothing_was_found">Ничего не нашлось</string>
+    <string name="no_internet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте\nподключение к интернету</string>
+
 </resources>

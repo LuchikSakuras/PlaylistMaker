@@ -10,8 +10,12 @@
     <attr name="switch_icon" />
     <attr name="search_color" />
     <attr name="round_corner_color" />
+    <attr name="placeholder_smile" />
+    <attr name="placeholder_no_internet" />
 
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="placeholder_smile">@drawable/light_placeholder_smile</item>
+        <item name="placeholder_no_internet">@drawable/light_placeholder_no_internet</item>
         <item name="switch_icon">@drawable/control</item>
         <item name="text_color">@color/black</item>
         <item name="text_info_color">@color/grey</item>
