@@ -41,7 +41,9 @@
                 android:id="@+id/artistName"
                 style="@style/trackInfoTextStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxEms="20"
+                android:ellipsize="end"/>
 
             <ImageView
                 style="@style/trackIconStyle"

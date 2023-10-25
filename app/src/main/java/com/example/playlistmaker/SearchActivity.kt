@@ -59,7 +59,6 @@ class SearchActivity : AppCompatActivity() {
         updateButton = findViewById(R.id.update_button)
         searchEditText = findViewById(R.id.inputEditText)
 
-
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -69,8 +68,8 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTextRequest()
                 true
-            }
-            false
+            } else
+                false
         }
 
         updateButton.setOnClickListener {
@@ -138,14 +137,14 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showPlaceholderError() {
         trackListClear()
-        nothingWasFound.visibility = View.VISIBLE
-        placeholderNoInternet.visibility = View.GONE
+        placeholderNoInternet.visibility = View.VISIBLE
+        nothingWasFound.visibility = View.GONE
     }
 
     private fun showPlaceholderForEmpty() {
         trackListClear()
-        placeholderNoInternet.visibility = View.VISIBLE
-        nothingWasFound.visibility = View.GONE
+        nothingWasFound.visibility = View.VISIBLE
+        placeholderNoInternet.visibility = View.GONE
     }
 
     private fun closePlaceholder() {
@@ -167,9 +166,9 @@ class SearchActivity : AppCompatActivity() {
 
                             trackListClear()
                             closePlaceholder()
-
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                trackList.addAll(response.body()?.results!!)
+                            val tracksResults = response.body()?.results
+                            if (tracksResults?.isNotEmpty() == true) {
+                                trackList.addAll(tracksResults)
                                 adapter.notifyDataSetChanged()
                             } else {
                                 showPlaceholderForEmpty()

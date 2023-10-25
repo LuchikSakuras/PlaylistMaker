@@ -2,7 +2,6 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -96,10 +95,11 @@
             android:layout_marginTop="@dimen/dp_24" />
 
         <LinearLayout
-            android:id="@+id/nothing_was_found"
+            android:id="@+id/placeholder_no_internet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_110"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility = "visible">
@@ -121,29 +121,25 @@
 
             <Button
                 android:id="@+id/update_button"
+                style="@style/updateButtonsStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="?attr/icon_back_color"
                 android:clickable="true"
-                android:fontFamily="@font/ys_display_medium"
                 android:paddingLeft="@dimen/dp_8"
                 android:paddingTop="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_8"
                 android:paddingBottom="@dimen/dp_10"
                 android:text="@string/update"
-                android:textAllCaps="false"
-                android:textColor="?attr/setting_background_color"
-                android:textFontWeight="500"
-                android:textSize="@dimen/sp_14"
                 tools:visibility="visible" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/placeholder_no_internet"
+            android:id="@+id/nothing_was_found"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_110"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility = "visible">
@@ -167,20 +163,4 @@
 
     </FrameLayout>
 
-</LinearLayout><!--                android:id="@+id/update_button"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_gravity="center"-->
-    <!--                android:backgroundTint="?attr/icon_back_color"-->
-    <!--                android:clickable="true"-->
-    <!--                android:fontFamily="@font/ys_display_medium"-->
-    <!--                android:paddingLeft="@dimen/dp_8"-->
-    <!--                android:paddingTop="@dimen/dp_10"-->
-    <!--                android:paddingRight="@dimen/dp_8"-->
-    <!--                android:paddingBottom="@dimen/dp_10"-->
-    <!--                android:text="@string/update"-->
-    <!--                android:textAllCaps="false"-->
-    <!--                android:textColor="?attr/setting_background_color"-->
-    <!--                android:textFontWeight="500"-->
-    <!--                android:textSize="@dimen/sp_14"-->
-    <!--                tools:visibility="visible" />-->
+</LinearLayout>
