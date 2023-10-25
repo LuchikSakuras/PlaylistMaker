@@ -98,11 +98,11 @@
             android:id="@+id/placeholder_no_internet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_110"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility = "visible">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/a"
@@ -125,10 +125,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_24"
                 android:clickable="true"
-                android:paddingLeft="@dimen/dp_8"
                 android:paddingTop="@dimen/dp_10"
-                android:paddingRight="@dimen/dp_8"
                 android:paddingBottom="@dimen/dp_10"
                 android:text="@string/update"
                 tools:visibility="visible" />
@@ -138,11 +137,11 @@
             android:id="@+id/nothing_was_found"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_110"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility = "visible">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/c"

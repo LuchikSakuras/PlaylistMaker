@@ -158,12 +158,9 @@ class SearchActivity : AppCompatActivity() {
                 .enqueue(object : Callback<TrackResult> {
                     @SuppressLint("NotifyDataSetChanged")
                     override fun onResponse(
-                        call: Call<TrackResult>, response: Response<TrackResult>
+                        call: Call<TrackResult>, response: Response<TrackResult>,
                     ) {
-
-
                         if (response.code() == 200) {
-
                             trackListClear()
                             closePlaceholder()
                             val tracksResults = response.body()?.results
