@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/setting_background_color"
+    android:clickable="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -32,29 +32,25 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_dark_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:ignore="ExtraText">
 
-        <TextView
+        <Switch
             style="@style/settingsButtonTextStyle"
-            android:layout_width="@dimen/dp_0"
+            android:id="@+id/themeSwitcher"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/dp_21"
             android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginBottom="@dimen/dp_21"
+            android:layout_marginEnd="@dimen/dp_5"
             android:layout_weight="1"
-            android:text="@string/dark_theme" />
+            android:text="@string/dark_theme"
+            android:thumbTint="?attr/icon_switch_color"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-        <ImageView
-            android:layout_width="@dimen/dp_35"
-            android:layout_height="@dimen/dp_18"
-            android:layout_marginEnd="@dimen/dp_22"
-            android:src="?attr/switch_icon"
-            app:tint="?attr/icon_switch_color" />
     </LinearLayout>
 
     <LinearLayout

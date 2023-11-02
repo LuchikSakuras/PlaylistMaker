@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,8 +10,10 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -20,11 +23,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(){
 
     private var trackList = ArrayList<Track>()
-    private val adapter = TrackAdapter(trackList)
-    private var searchText: String = ""
+    private var storyList = ArrayList<Track>()
+
+    private val adapter = TrackAdapter{
+        addToHistory(it)
+    }
+
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
         .addConverterFactory(GsonConverterFactory.create())
@@ -37,13 +44,18 @@ class SearchActivity : AppCompatActivity() {
         )
         .build()
     private val api = retrofit.create(ITunesApi::class.java)
+
+    private var searchText: String = ""
     private lateinit var placeholderNoInternet: LinearLayout
     private lateinit var nothingWasFound: LinearLayout
     private lateinit var updateButton: Button
     private lateinit var searchEditText: EditText
+    private lateinit var clearHistoryButton: Button
+    private lateinit var titleForStoryTextView: TextView
+    private lateinit var sharedPrefs: SharedPreferences
+    private val userPreferences = UserPreferences()
 
-
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -53,24 +65,18 @@ class SearchActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val buttonBack: ImageView = findViewById(R.id.buttonBack)
 
-
         placeholderNoInternet = findViewById(R.id.placeholder_no_internet)
         nothingWasFound = findViewById(R.id.nothing_was_found)
         updateButton = findViewById(R.id.update_button)
         searchEditText = findViewById(R.id.inputEditText)
+        clearHistoryButton = findViewById(R.id.clearHistoryButton)
+        titleForStoryTextView = findViewById(R.id.titleForStoryTextView)
+        sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
+        storyList = userPreferences.readStoryList(sharedPrefs)
 
+        adapter.trackList = trackList
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-        searchEditText.setOnEditorActionListener { _, actionId, _ ->
-            //кнопка переноса строки будет заменена на кнопку Done:
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTextRequest()
-                true
-            } else
-                false
-        }
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         updateButton.setOnClickListener {
             searchTextRequest()
@@ -80,7 +86,6 @@ class SearchActivity : AppCompatActivity() {
             val searchText = savedInstanceState.getString(SEARCH_TEXT)
             searchEditText.setText(searchText)
         }
-
 
         buttonBack.setOnClickListener {
             finish()
@@ -92,6 +97,27 @@ class SearchActivity : AppCompatActivity() {
                 getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
             trackListClear()
+        }
+
+        searchEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (searchEditText.hasFocus() && storyList.isNotEmpty()){
+                showStory()
+                recyclerView.adapter = adapter
+                adapter.notifyDataSetChanged()
+            } else {
+                closeStory()
+                recyclerView.adapter = adapter
+                adapter.notifyDataSetChanged()
+            }
+        }
+
+        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            //кнопка переноса строки будет заменена на кнопку Done:
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                searchTextRequest()
+                true
+            } else
+                false
         }
 
         searchEditText.addTextChangedListener(
@@ -106,18 +132,29 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     searchText = searchEditText.text.toString()
-                    if (s.isNullOrEmpty()) {
-                        clearButton.visibility = View.GONE
+                    clearButton.isVisible = !s.isNullOrEmpty()
+
+                    if (searchEditText.hasFocus() && s?.isEmpty()== true && storyList.isNotEmpty()){
+                        showStory()
+                        recyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
                     } else {
-                        clearButton.visibility = View.VISIBLE
+                        closeStory()
+                        recyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
                     }
                 }
-
                 override fun afterTextChanged(s: Editable?) {}
             })
 
+        clearHistoryButton.setOnClickListener {
+            storyList.clear()
+            userPreferences.writeStoryList(sharedPrefs, storyList)
+            adapter.notifyDataSetChanged()
+            titleForStoryTextView.isVisible = false
+            clearHistoryButton.isVisible = false
+        }
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -137,19 +174,19 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showPlaceholderError() {
         trackListClear()
-        placeholderNoInternet.visibility = View.VISIBLE
-        nothingWasFound.visibility = View.GONE
+        placeholderNoInternet.isVisible = true
+        nothingWasFound.isVisible = false
     }
 
     private fun showPlaceholderForEmpty() {
         trackListClear()
-        nothingWasFound.visibility = View.VISIBLE
-        placeholderNoInternet.visibility = View.GONE
+        nothingWasFound.isVisible = true
+        placeholderNoInternet.isVisible = false
     }
 
     private fun closePlaceholder() {
-        placeholderNoInternet.visibility = View.GONE
-        nothingWasFound.visibility = View.GONE
+        placeholderNoInternet.isVisible = false
+        nothingWasFound.isVisible = false
     }
 
     private fun searchTextRequest() {
@@ -186,6 +223,39 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+   @SuppressLint("NotifyDataSetChanged")
+   private fun addToHistory(track: Track) {
+        if (!storyList.contains(track)){
+            if (storyList.size == 10) {
+                storyList.removeLast()
+                addStoryList(track)
+            } else {
+                addStoryList(track)
+            }
+        } else {
+            storyList.remove(track)
+            addStoryList(track)
+        }
+    }
+
+    private fun showStory(){
+        titleForStoryTextView.isVisible = true
+        clearHistoryButton.isVisible = true
+        adapter.trackList = storyList
+    }
+
+    private fun closeStory(){
+        titleForStoryTextView.isVisible = false
+        clearHistoryButton.isVisible = false
+        adapter.trackList = trackList
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun addStoryList(track: Track) {
+        storyList.add(0, track)
+        adapter.notifyDataSetChanged()
+        userPreferences.writeStoryList(sharedPrefs, storyList)
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun trackListClear() {

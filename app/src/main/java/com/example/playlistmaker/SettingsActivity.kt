@@ -2,12 +2,13 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Configuration
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.Switch
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 
@@ -17,18 +18,35 @@ class SettingsActivity : AppCompatActivity() {
         var currentTheme = R.style.Theme_MyApp
     }
 
+    private lateinit var sharedPrefs: SharedPreferences
+    private val userPreferences = UserPreferences()
+
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    lateinit var themeSwitcher: Switch
+
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(currentTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
+
+
         val buttonBack: LinearLayout = findViewById(R.id.button_back)
         val buttonShareTheApp: LinearLayout = findViewById(R.id.button_share_the_app)
         val buttonSupport: LinearLayout = findViewById(R.id.button_support)
         val buttonArrowForward: LinearLayout = findViewById(R.id.button_arrow_forward)
-        val buttonDarkTheme: LinearLayout = findViewById(R.id.button_dark_theme)
+        themeSwitcher = findViewById(R.id.themeSwitcher)
 
+        if(userPreferences.readSwitcher(sharedPrefs)){
+            themeSwitcher.isChecked = true
+        }
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
 
         buttonBack.setOnClickListener {
             finish()
@@ -63,17 +81,10 @@ class SettingsActivity : AppCompatActivity() {
             arrowForwardIntent.data = Uri.parse(url)
             startActivity(arrowForwardIntent)
         }
+    }
 
-        buttonDarkTheme.setOnClickListener {
-            currentTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            when (currentTheme) {
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-            }
-        }
+    override fun onStop() {
+        super.onStop()
+        userPreferences.writeSwitcher(sharedPrefs, themeSwitcher.isChecked)
     }
 }
