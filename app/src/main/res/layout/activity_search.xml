@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/button_back"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
@@ -17,6 +17,7 @@
         tools:ignore="UseCompoundDrawables,UselessParent">
 
         <ImageView
+            android:id="@+id/buttonBack"
             style="@style/backButtonIconsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,18 +59,20 @@
                 android:src="@drawable/search_icon" />
 
             <EditText
-                android:id="@+id/input_edit_text"
+                android:id="@+id/inputEditText"
                 style="@style/searchEditTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_weight="1"
                 android:hint="@string/search_text"
+                android:imeOptions="actionDone"
                 android:inputType="text"
-                android:lines="1" />
+                android:lines="1"
+                android:singleLine="true" />
 
             <ImageView
-                android:id="@+id/clear_icon"
+                android:id="@+id/clearIcon"
                 style="@style/searchBarIconStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,15 +84,82 @@
 
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_24" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/artworkUrl100"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_24" />
+
+        <LinearLayout
+            android:id="@+id/placeholder_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_110"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="?attr/placeholder_no_internet" />
+
+            <TextView
+                android:id="@+id/b"
+                style="@style/placeholderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/no_internet"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/update_button"
+                style="@style/updateButtonsStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_24"
+                android:clickable="true"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10"
+                android:text="@string/update"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nothing_was_found"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_110"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="?attr/placeholder_smile" />
+
+            <TextView
+                android:id="@+id/d"
+                style="@style/placeholderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/nothing_was_found" />
+
+        </LinearLayout>
+
+
+    </FrameLayout>
 
 </LinearLayout>
