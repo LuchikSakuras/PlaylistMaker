@@ -1,19 +1,19 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -29,7 +29,8 @@ class SearchActivity : AppCompatActivity(){
     private var storyList = ArrayList<Track>()
 
     private val adapter = TrackAdapter{
-        addToHistory(it)
+       // goToLibrary(it)
+       addToHistory(it)
     }
 
     private val retrofit = Retrofit.Builder()
@@ -168,7 +169,7 @@ class SearchActivity : AppCompatActivity(){
         findViewById<EditText>(R.id.inputEditText).setText(searchText)
     }
 
-    companion object {
+    private companion object {
         const val SEARCH_TEXT = "searchText"
     }
 
@@ -228,14 +229,29 @@ class SearchActivity : AppCompatActivity(){
         if (!storyList.contains(track)){
             if (storyList.size == 10) {
                 storyList.removeLast()
-                addStoryList(track)
+                    goToLibrary(track)
             } else {
-                addStoryList(track)
+                goToLibrary(track)
             }
         } else {
             storyList.remove(track)
-            addStoryList(track)
+            goToLibrary(track)
         }
+    }
+
+    private fun goToLibrary(track: Track){
+        addStoryList(track)
+        val intent = Intent(this@SearchActivity, MediaLibraryActivity::class.java)
+        intent.putExtra("trackName", track.trackName)
+        Log.e("trackname", track.trackName)
+        intent.putExtra("artistName", track.artistName)
+        intent.putExtra("trackTimeMillis", track.trackTimeMillis)
+        intent.putExtra("artworkUrl100", track.artworkUrl100)
+        intent.putExtra("collectionName", track.collectionName)
+        intent.putExtra("releaseDate", track.releaseDate)
+        intent.putExtra("primaryGenreName", track.primaryGenreName)
+        intent.putExtra("country", track.country)
+        startActivity(intent)
     }
 
     private fun showStory(){
@@ -263,4 +279,5 @@ class SearchActivity : AppCompatActivity(){
         adapter.notifyDataSetChanged()
     }
 }
+
 

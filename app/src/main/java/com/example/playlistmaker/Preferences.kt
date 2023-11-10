@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class UserPreferences {
+
     fun readStoryList(sharedPreferences: SharedPreferences): ArrayList<Track> {
         val gson = Gson()
         val json = sharedPreferences.getString(TRACK_LIST_KEY, null)
