@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 class TrackResult(
@@ -8,6 +10,7 @@ class TrackResult(
 )
 
 data class Track(
+    val trackId: Int,
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: Int,
