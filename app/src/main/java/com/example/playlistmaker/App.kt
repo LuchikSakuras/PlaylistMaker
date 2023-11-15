@@ -16,12 +16,16 @@ class App : Application() {
         super.onCreate()
     }
 
+
+    //метод смены темы
     fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled
         AppCompatDelegate.setDefaultNightMode(
+            //если свитч вкл, ночная тема вкл
             if (darkThemeEnabled) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
+                //если свитч выкл, ночная тема выкл
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )

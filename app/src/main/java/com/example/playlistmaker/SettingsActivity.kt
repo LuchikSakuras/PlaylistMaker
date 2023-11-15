@@ -63,8 +63,14 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.themeSwitcher.isChecked = userPreferences.readSwitcher(sharedPrefs)
 
+        //присваиваем свитчу логику смены темы
         binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             (applicationContext as App).switchTheme(checked)
+            // первый лог проверяет, состояние свитча, поступающего в метод для установки темы
+            // второй логпроверяет, состояние записанное в память для установки параметра темы
+            // 1, false - дневная тема
+            // 2, true -  ночная тема
+            // при смене состояния свитча логи выдают правильные значения, но темная тема применяется через раз
             Log.e("start:", checked.toString())
             Log.e("checked:", AppCompatDelegate.getDefaultNightMode().toString())
         }
