@@ -1,36 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <attr name="text_color" />
-    <attr name="text_info_color" />
-    <attr name="setting_background_color" />
-    <attr name="icon_back_color" />
-    <attr name="icon_switch_color" />
-    <attr name="icon_color" />
-    <attr name="main_background_color" />
+    <attr name="black_to_white" />
+    <attr name="grey_to_white" />
+    <attr name="white_to_black" />
+    <attr name="blue_to_black" />
     <attr name="switch_icon" />
-    <attr name="search_color" />
-    <attr name="round_corner_color" />
+    <attr name="grey_to_black" />
+    <attr name="search_grey_to_white" />
     <attr name="placeholder_smile" />
     <attr name="placeholder_no_internet" />
     <attr name="button_add" />
     <attr name="button_like" />
-    <attr name="button_play_color" />
 
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="placeholder_smile">@drawable/light_placeholder_smile</item>
         <item name="placeholder_no_internet">@drawable/light_placeholder_no_internet</item>
         <item name="switch_icon">@drawable/control</item>
-        <item name="text_color">@color/black</item>
-        <item name="text_info_color">@color/grey</item>
-        <item name="setting_background_color">@color/white</item>
-        <item name="main_background_color">@color/blue</item>
-        <item name="icon_back_color">@color/black</item>
-        <item name="icon_switch_color">@color/grey</item>
-        <item name="icon_color">@color/grey</item>
-        <item name="search_color">@color/grey</item>
-        <item name="round_corner_color">@color/search_grey</item>
+        <item name="black_to_white">@color/black</item>
+        <item name="grey_to_white">@color/grey</item>
+        <item name="white_to_black">@color/white</item>
+        <item name="blue_to_black">@color/blue</item>
+        <item name="grey_to_black">@color/grey</item>
+        <item name="search_grey_to_white">@color/search_grey</item>
         <item name="button_add">@drawable/button__add</item>
         <item name="button_like">@drawable/button_like_track</item>
-        <item name="button_play_color">@color/black</item>
     </style>
 </resources>

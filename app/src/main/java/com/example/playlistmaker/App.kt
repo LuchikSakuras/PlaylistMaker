@@ -1,9 +1,7 @@
 package com.example.playlistmaker
 
 import android.app.Application
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.gson.Gson
 
 const val PREFERENCES = "preferences"
 const val DARK_THEME_KEY = "key_for_theme"

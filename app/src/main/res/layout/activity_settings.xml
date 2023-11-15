@@ -1,131 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/setting_background_color"
-    android:clickable="true"
+    android:background="?attr/white_to_black"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/button_back"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_border"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp_18" />
+
+    <ImageButton
+        android:id="@+id/setting_button_back"
+        style="@style/backButtonsStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_4"
+        android:contentDescription="@string/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back" />
+
+    <TextView
+        style="@style/title_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_14"
+        android:text="@string/settings"
+        app:layout_constraintStart_toEndOf="@id/setting_button_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/title_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables,UselessParent">
+        app:layout_constraintGuide_begin="@dimen/dp_80" />
 
-        <ImageView
-            style="@style/backButtonIconsStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_16"
-            android:src="@drawable/arrow_back" />
-
-        <TextView
-            style="@style/mainScreenTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_8"
-            android:text="@string/settings"
-            tools:ignore="ExtraText" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Switch
+        android:id="@+id/theme_switcher"
+        style="@style/forListTextStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_21"
+        android:layout_marginEnd="@dimen/dp_5"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:ignore="ExtraText">
+        android:text="@string/dark_theme"
+        android:textSize="@dimen/sp_16"
+        android:thumbTint="?attr/grey_to_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@+id/title_border"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-        <Switch
-            style="@style/settingsButtonTextStyle"
-            android:id="@+id/themeSwitcher"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/dp_21"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/dark_theme"
-            android:thumbTint="?attr/icon_switch_color"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    <TextView
+        android:id="@+id/share_the_app"
+        style="@style/forListTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_42"
+        android:text="@string/share_the_app"
+        app:layout_constraintStart_toEndOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/theme_switcher" />
 
-    </LinearLayout>
-
-    <LinearLayout
+    <ImageView
         android:id="@+id/button_share_the_app"
-        android:layout_width="match_parent"
+        style="@style/settingsButtonIconsStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:ignore="ExtraText">
+        android:src="@drawable/share"
+        app:layout_constraintBottom_toBottomOf="@id/share_the_app"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintTop_toTopOf="@id/share_the_app" />
 
-        <TextView
-            style="@style/settingsButtonTextStyle"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginBottom="@dimen/dp_21"
-            android:layout_weight="1"
-            android:text="@string/share_the_app" />
+    <TextView
+        android:id="@+id/support"
+        style="@style/forListTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_42"
+        android:text="@string/support"
+        app:layout_constraintStart_toEndOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/share_the_app" />
 
-        <ImageView
-            style="@style/settingsButtonIconsStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/share" />
-    </LinearLayout>
-
-    <LinearLayout
+    <ImageView
         android:id="@+id/button_support"
-        android:layout_width="match_parent"
+        style="@style/settingsButtonIconsStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:ignore="ExtraText">
+        android:src="@drawable/support"
+        app:layout_constraintBottom_toBottomOf="@id/support"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintTop_toTopOf="@id/support" />
 
-        <TextView
-            style="@style/settingsButtonTextStyle"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginBottom="@dimen/dp_21"
-            android:layout_weight="1"
-            android:text="@string/support" />
+    <TextView
+        android:id="@+id/arrow_forward"
+        style="@style/forListTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_42"
+        android:text="@string/user_agreement"
+        app:layout_constraintStart_toEndOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/support" />
 
-        <ImageView
-            style="@style/settingsButtonIconsStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/support" />
-    </LinearLayout>
-
-    <LinearLayout
+    <ImageView
         android:id="@+id/button_arrow_forward"
-        android:layout_width="match_parent"
+        style="@style/settingsButtonIconsStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:ignore="ExtraText">
+        android:src="@drawable/arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@id/arrow_forward"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintTop_toTopOf="@id/arrow_forward" />
 
-        <TextView
-            style="@style/settingsButtonTextStyle"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginBottom="@dimen/dp_21"
-            android:layout_weight="1"
-            android:text="@string/user_agreement" />
-
-        <ImageView
-            style="@style/settingsButtonIconsStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_forward" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

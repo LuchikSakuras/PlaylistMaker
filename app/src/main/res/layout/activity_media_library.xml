@@ -4,232 +4,241 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/setting_background_color"
+    android:background="?attr/white_to_black"
     tools:context=".MediaLibraryActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/infoLeftBorder"
+        android:id="@+id/info_left_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="@dimen/dp_16" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/contentLeftBorder"
+        android:id="@+id/content_left_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="@dimen/dp_24" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/contentRightBorder"
+        android:id="@+id/content_right_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/dp_24" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/infoRightBorder"
+        android:id="@+id/info_right_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/dp_16" />
 
     <ImageButton
-        android:id="@+id/arrowBack"
+        android:id="@+id/arrow_back"
         style="@style/backButtonsStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_4"
         android:layout_marginTop="@dimen/dp_4"
-        android:contentDescription = "@string/back"
+        android:contentDescription="@string/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow_back" />
 
     <ImageView
-        android:id="@+id/imageTrack"
+        android:id="@+id/image_track"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp_26"
         android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintEnd_toStartOf="@id/contentRightBorder"
-        app:layout_constraintStart_toStartOf="@id/contentLeftBorder"
-        app:layout_constraintTop_toBottomOf="@id/arrowBack" />
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toStartOf="@id/content_right_border"
+        app:layout_constraintStart_toStartOf="@id/content_left_border"
+        app:layout_constraintTop_toBottomOf="@id/arrow_back"
+        tools:src="@drawable/placeholder" />
 
     <TextView
-        android:id="@+id/trackName"
+        android:id="@+id/track_name"
         style="@style/trackNameTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/contentLeftBorder"
-        app:layout_constraintTop_toBottomOf="@id/imageTrack" />
+        app:layout_constraintStart_toStartOf="@id/content_left_border"
+        app:layout_constraintTop_toBottomOf="@id/image_track"
+        tools:text="track_name" />
 
     <TextView
-        android:id="@+id/artistName"
+        android:id="@+id/artist_name"
         style="@style/artistNameTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_12"
-        app:layout_constraintStart_toStartOf="@id/contentLeftBorder"
-        app:layout_constraintTop_toBottomOf="@id/trackName" />
+        app:layout_constraintStart_toStartOf="@id/content_left_border"
+        app:layout_constraintTop_toBottomOf="@id/track_name"
+        tools:text="artist_name" />
 
     <ImageButton
-        android:id="@+id/buttonAdd"
+        android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_24"
         android:background="@null"
         android:contentDescription="@string/add_to_playlist"
-        app:layout_constraintStart_toStartOf="@id/contentLeftBorder"
-        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        app:layout_constraintStart_toStartOf="@id/content_left_border"
+        app:layout_constraintTop_toTopOf="@+id/button_play"
         app:srcCompat="?attr/button_add" />
 
     <ImageButton
-        android:id="@+id/buttonPlay"
+        android:id="@+id/button_play"
         style="@style/playButtonsStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
         android:contentDescription="@string/play"
-        app:layout_constraintBottom_toTopOf="@+id/timePlay"
+        app:layout_constraintBottom_toTopOf="@+id/time_play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artistName"
+        app:layout_constraintTop_toBottomOf="@+id/artist_name"
         app:srcCompat="@drawable/button_play"
-        app:tint="?attr/button_play_color" />
+        app:tint="?attr/black_to_white" />
 
     <ImageButton
-        android:id="@+id/buttonLike"
+        android:id="@+id/button_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_24"
         android:background="@null"
         android:contentDescription="@string/add_to_favorites"
-        app:layout_constraintEnd_toEndOf="@id/contentRightBorder"
-        app:layout_constraintTop_toTopOf="@+id/buttonPlay"
+        app:layout_constraintEnd_toEndOf="@id/content_right_border"
+        app:layout_constraintTop_toTopOf="@+id/button_play"
         app:srcCompat="?attr/button_like" />
 
     <TextView
-        android:id="@+id/timePlay"
+        android:id="@+id/time_play"
         style="@style/timePlayTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_4"
-        app:layout_constraintBottom_toTopOf="@+id/trackTimeMills"
+        app:layout_constraintBottom_toTopOf="@+id/track_time_mills"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonPlay" />
+        app:layout_constraintTop_toBottomOf="@id/button_play"
+        tools:text="00:00" />
 
 
     <TextView
-        android:id="@+id/trackTimeMills"
+        android:id="@+id/track_time_mills"
         style="@style/infoTextStyle"
         android:layout_width="0dp"
-        android:layout_marginTop="@dimen/dp_1"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_1"
         android:text="@string/Duration"
-        app:layout_constraintBottom_toTopOf="@+id/collectionName"
-        app:layout_constraintStart_toStartOf="@id/infoLeftBorder"
-        app:layout_constraintTop_toBottomOf="@id/timePlay" />
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toTopOf="@+id/collection_name"
+        app:layout_constraintStart_toStartOf="@id/info_left_border"
+        app:layout_constraintTop_toBottomOf="@id/time_play" />
 
     <TextView
-        android:id="@+id/trackTimeMillsTrack"
-        style="@style/infoTrackTextStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@+id/trackTimeMills"
-        app:layout_constraintEnd_toStartOf="@id/infoRightBorder"
-        tools:text="durance"/>
-
-    <TextView
-        android:id="@+id/collectionName"
+        android:id="@+id/track_time_mills_track"
         style="@style/infoTextStyle"
         android:layout_width="0dp"
-        android:layout_marginTop="@dimen/dp_1"
         android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@+id/track_time_mills"
+        app:layout_constraintEnd_toStartOf="@id/info_right_border"
+        tools:text="00:00" />
+
+    <TextView
+        android:id="@+id/collection_name"
+        style="@style/infoTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_1"
         android:text="@string/Album"
+        android:textColor="@color/grey"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/releaseDate"
-        app:layout_constraintStart_toStartOf="@id/infoLeftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/trackTimeMills"
+        app:layout_constraintBottom_toTopOf="@id/release_date"
+        app:layout_constraintStart_toStartOf="@id/info_left_border"
+        app:layout_constraintTop_toBottomOf="@+id/track_time_mills"
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/collectionNameTrack"
-        style="@style/infoTrackTextStyle"
+        android:id="@+id/collection_name_track"
+        style="@style/infoTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@+id/collectionName"
-        app:layout_constraintEnd_toStartOf="@id/infoRightBorder"
-        tools:visibility="visible"
-        tools:text="album"/>
+        app:layout_constraintBaseline_toBaselineOf="@+id/collection_name"
+        app:layout_constraintEnd_toStartOf="@id/info_right_border"
+        tools:text="collection_name_track"
+        tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/releaseDate"
+        android:id="@+id/release_date"
         style="@style/infoTextStyle"
         android:layout_width="0dp"
-        android:layout_marginTop="@dimen/dp_1"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_1"
         android:text="@string/Year"
-        app:layout_constraintBottom_toTopOf="@id/primaryGenreName"
-        app:layout_constraintStart_toStartOf="@id/infoLeftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/collectionName" />
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toTopOf="@id/primary_genre_name"
+        app:layout_constraintStart_toStartOf="@id/info_left_border"
+        app:layout_constraintTop_toBottomOf="@+id/collection_name" />
 
     <TextView
-        android:id="@+id/releaseDateTrack"
-        style="@style/infoTrackTextStyle"
+        android:id="@+id/release_date_track"
+        style="@style/infoTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@+id/releaseDate"
-        app:layout_constraintEnd_toStartOf="@id/infoRightBorder"
-        tools:text="year"/>
+        app:layout_constraintBaseline_toBaselineOf="@+id/release_date"
+        app:layout_constraintEnd_toStartOf="@id/info_right_border"
+        tools:text="release_date_track" />
 
     <TextView
-        android:id="@+id/primaryGenreName"
+        android:id="@+id/primary_genre_name"
         style="@style/infoTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_1"
         android:text="@string/Genre"
+        android:textColor="@color/grey"
         app:layout_constraintBottom_toTopOf="@id/country"
-        app:layout_constraintStart_toStartOf="@id/infoLeftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/releaseDate" />
+        app:layout_constraintStart_toStartOf="@id/info_left_border"
+        app:layout_constraintTop_toBottomOf="@+id/release_date" />
 
     <TextView
-        android:id="@+id/primaryGenreNameTrack"
-        style="@style/infoTrackTextStyle"
+        android:id="@+id/primary_genre_name_track"
+        style="@style/infoTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@+id/primaryGenreName"
-        app:layout_constraintEnd_toStartOf="@id/infoRightBorder"
-        tools:text="genre"/>
+        app:layout_constraintBaseline_toBaselineOf="@+id/primary_genre_name"
+        app:layout_constraintEnd_toStartOf="@id/info_right_border"
+        tools:text="primary_genre_name_track" />
 
     <TextView
         android:id="@+id/country"
         style="@style/infoTextStyle"
         android:layout_width="0dp"
-        android:layout_marginTop="@dimen/dp_1"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_1"
         android:text="@string/Сountry"
-        app:layout_constraintBottom_toBottomOf="@id/BottomBorder"
-        app:layout_constraintStart_toStartOf="@id/infoLeftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/primaryGenreName" />
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toBottomOf="@id/bottom_border"
+        app:layout_constraintStart_toStartOf="@id/info_left_border"
+        app:layout_constraintTop_toBottomOf="@+id/primary_genre_name" />
 
     <TextView
-        android:id="@+id/countryTrack"
-        style="@style/infoTrackTextStyle"
+        android:id="@+id/country_track"
+        style="@style/infoTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/country"
-        app:layout_constraintEnd_toStartOf="@id/infoRightBorder"
-        tools:text="country"/>
+        app:layout_constraintEnd_toStartOf="@id/info_right_border"
+        tools:text="country_track" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/BottomBorder"
+        android:id="@+id/bottom_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

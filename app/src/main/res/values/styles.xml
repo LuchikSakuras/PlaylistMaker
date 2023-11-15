@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="backButtonsStyle">
-        <item name="tint">?attr/icon_back_color</item>
-        <item name="contentDescription">@string/back</item>
-        <item name="android:padding">@dimen/dp_12</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <style name="playButtonsStyle">
-        <item name="tint">?attr/button_play_color</item>
-        <item name="contentDescription">@string/play</item>
-    </style>
-
-    <style name="backButtonIconsStyle">
-        <item name="tint">?attr/icon_back_color</item>
-        <item name="iconGravity">textStart</item>
-    </style>
-
-    <style name="settingsButtonIconsStyle">
-        <item name="android:layout_marginEnd">@dimen/dp_18</item>
-        <item name="tint">?attr/icon_color</item>
-    </style>
-
-    <style name="settingsButtonTextStyle">
-        <item name="android:textSize">@dimen/sp_16</item>
-        <item name="android:gravity">start</item>
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:textColor">?attr/text_color</item>
-    </style>
-
     <style name="mainButtonsStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
@@ -45,8 +15,8 @@
     </style>
 
     <style name="searchButtonsStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:backgroundTint">?attr/icon_back_color</item>
-        <item name="android:textColor">?attr/setting_background_color</item>
+        <item name="android:backgroundTint">?attr/black_to_white</item>
+        <item name="android:textColor">?attr/white_to_black</item>
         <item name="android:textSize">@dimen/sp_14</item>
         <item name="android:textAllCaps">false</item>
         <item name="cornerRadius">@dimen/dp_54</item>
@@ -54,31 +24,72 @@
         <item name="android:textFontWeight">500</item>
     </style>
 
-    <style name="mainScreenTextStyle">
+
+    <style name="backButtonsStyle">
+        <item name="tint">?attr/black_to_white</item>
+        <item name="android:padding">@dimen/dp_12</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="playButtonsStyle">
+        <item name="tint">?attr/black_to_white</item>
+        <item name="contentDescription">@string/play</item>
+    </style>
+
+    <style name="settingsButtonIconsStyle">
+        <item name="tint">?attr/grey_to_white</item>
+    </style>
+
+
+    <style name="title_text_style">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
-        <item name="android:textColor">?attr/text_color</item>
+        <item name="android:textColor">?attr/black_to_white</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/sp_22</item>
     </style>
 
-    <style name="searchBarIconStyle">
-        <item name="tint">?attr/search_color</item>
+    <style name="trackNameTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">?attr/black_to_white</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/sp_22</item>
     </style>
 
-    <style name="trackTextStyle">
+    <style name="artistNameTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">?attr/black_to_white</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="timePlayTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">?attr/black_to_white</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="infoTextStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">?attr/black_to_white</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/sp_13</item>
+    </style>
+
+    <style name="forListTextStyle">
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:gravity">start</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textColor">?attr/text_color</item>
-        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textColor">?attr/black_to_white</item>
     </style>
 
     <style name="trackInfoTextStyle">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:gravity">start</item>
-        <item name="android:textColor">?attr/text_info_color</item>
+        <item name="android:textColor">?attr/grey_to_white</item>
         <item name="android:textSize">@dimen/sp_11</item>
     </style>
 
@@ -86,56 +97,21 @@
         <item name="android:background">@null</item>
         <item name="android:fontFamily">@font/ys_text_regular</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textColorHint">?attr/search_color</item>
+        <item name="android:textColorHint">?attr/grey_to_black</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
-    <style name="trackIconStyle">
-        <item name="iconGravity">textStart</item>
-        <item name="tint">?attr/icon_color</item>
-    </style>
-
     <style name="searchTextStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textColor">?attr/text_color</item>
+        <item name="android:textColor">?attr/black_to_white</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/sp_19</item>
     </style>
 
-    <style name="trackNameTextStyle">
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textColor">?attr/text_color</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:textSize">@dimen/sp_22</item>
-    </style>
 
-    <style name="artistNameTextStyle">
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textColor">?attr/text_color</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:textSize">@dimen/sp_14</item>
+    <style name="trackIconStyle">
+        <item name="iconGravity">textStart</item>
+        <item name="tint">?attr/grey_to_white</item>
     </style>
-
-    <style name="timePlayTextStyle">
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textColor">?attr/text_color</item>
-        <item name="android:textFontWeight">500</item>
-        <item name="android:textSize">@dimen/sp_14</item>
-    </style>
-
-    <style name="infoTextStyle">
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:textSize">@dimen/sp_13</item>
-    </style>
-
-    <style name="infoTrackTextStyle">
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textColor">?attr/text_color</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:textSize">@dimen/sp_13</item>
-    </style>
-
 </resources>
