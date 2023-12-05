@@ -12,6 +12,9 @@
     <attr name="round_corner_color" />
     <attr name="placeholder_smile" />
     <attr name="placeholder_no_internet" />
+    <attr name="button_add" />
+    <attr name="button_like" />
+    <attr name="button_play_color" />
 
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="placeholder_smile">@drawable/light_placeholder_smile</item>
@@ -26,5 +29,8 @@
         <item name="icon_color">@color/grey</item>
         <item name="search_color">@color/grey</item>
         <item name="round_corner_color">@color/search_grey</item>
+        <item name="button_add">@drawable/button__add</item>
+        <item name="button_like">@drawable/button_like_track</item>
+        <item name="button_play_color">@color/black</item>
     </style>
 </resources>

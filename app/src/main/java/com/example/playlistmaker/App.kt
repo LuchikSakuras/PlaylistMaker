@@ -8,6 +8,7 @@ import com.google.gson.Gson
 const val PREFERENCES = "preferences"
 const val DARK_THEME_KEY = "key_for_theme"
 const val TRACK_LIST_KEY = "key_for_track_list"
+const val TRACK_KEY = "key_for_track"
 
 class App : Application() {
 
