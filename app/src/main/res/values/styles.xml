@@ -32,7 +32,7 @@
     </style>
 
     <style name="playButtonsStyle">
-        <item name="tint">?attr/black_to_white</item>
+        <item name="backgroundTint">?attr/black_to_white</item>
         <item name="contentDescription">@string/play</item>
     </style>
 

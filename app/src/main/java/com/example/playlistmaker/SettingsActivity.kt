@@ -6,16 +6,14 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
-//    @SuppressLint("MissingInflatedId")
-//    companion object {
-//        var currentTheme = R.style.Theme_MyApp
-//    }
 
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var sharedPrefs: SharedPreferences
@@ -23,7 +21,6 @@ class SettingsActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
-//        setTheme(currentTheme)
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -65,8 +62,7 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             (applicationContext as App).switchTheme(checked)
-            Log.e("start:", checked.toString())
-            Log.e("checked:", AppCompatDelegate.getDefaultNightMode().toString())
+            userPreferences.writeSwitcher(sharedPrefs, checked)
         }
     }
 

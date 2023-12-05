@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
@@ -38,6 +40,10 @@ class SearchActivity : AppCompatActivity() {
             ).build()
         ).build()
     private val api = retrofit.create(ITunesApi::class.java)
+
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchTextRequest() }
 
     private var searchText: String = ""
     private lateinit var sharedPrefs: SharedPreferences
@@ -122,6 +128,7 @@ class SearchActivity : AppCompatActivity() {
                     binding.recyclerView.adapter = adapter
                     adapter.notifyDataSetChanged()
                 }
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -150,6 +157,22 @@ class SearchActivity : AppCompatActivity() {
 
     private companion object {
         const val SEARCH_TEXT = "searchText"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun showPlaceholderError() {
@@ -180,12 +203,14 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTextRequest() {
         if (binding.inputEditText.text.isNotEmpty()) {
+            binding.progressBar.isVisible = true
             api.search(binding.inputEditText.text.toString())
                 .enqueue(object : Callback<TrackResult> {
                     @SuppressLint("NotifyDataSetChanged")
                     override fun onResponse(
                         call: Call<TrackResult>, response: Response<TrackResult>,
                     ) {
+                        binding.progressBar.isVisible = false
                         if (response.code() == 200) {
                             trackListClear()
                             closePlaceholder()
@@ -194,20 +219,24 @@ class SearchActivity : AppCompatActivity() {
                                 trackList.addAll(tracksResults)
                                 adapter.notifyDataSetChanged()
                             } else {
+                                binding.progressBar.isVisible = false
                                 showPlaceholderForEmpty()
                             }
 
                         } else {
+                            binding.progressBar.isVisible = false
                             showPlaceholderError()
                         }
                     }
 
                     override fun onFailure(call: Call<TrackResult>, t: Throwable) {
+                        binding.progressBar.isVisible = false
                         showPlaceholderError()
                     }
                 })
         } else {
             trackListClear()
+            closePlaceholder()
         }
     }
 
@@ -216,17 +245,17 @@ class SearchActivity : AppCompatActivity() {
         if (!storyList.contains(track)) {
             if (storyList.size == 10) {
                 storyList.removeLast()
-                goToLibrary(track)
+                goToPlayer(track)
             } else {
-                goToLibrary(track)
+                goToPlayer(track)
             }
         } else {
             storyList.remove(track)
-            goToLibrary(track)
+            goToPlayer(track)
         }
     }
 
-    private fun goToLibrary(track: Track) {
+    private fun goToPlayer(track: Track) {
         addStoryList(track)
 
         val trackData = Track(
@@ -237,12 +266,15 @@ class SearchActivity : AppCompatActivity() {
             track.collectionName,
             track.releaseDate,
             track.primaryGenreName,
-            track.country
+            track.country,
+            track.previewUrl
         )
 
-        val intent = Intent(this@SearchActivity, MediaLibraryActivity::class.java)
-        intent.putExtra(TRACK_KEY, trackData)
-        startActivity(intent)
+        if (clickDebounce()) {
+            val intent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+            intent.putExtra(TRACK_KEY, trackData)
+            startActivity(intent)
+        }
     }
 
     private fun showStory() {
@@ -269,6 +301,7 @@ class SearchActivity : AppCompatActivity() {
         trackList.clear()
         adapter.notifyDataSetChanged()
     }
+
 }
 
 
