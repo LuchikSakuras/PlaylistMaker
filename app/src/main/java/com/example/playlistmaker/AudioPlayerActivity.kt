@@ -98,7 +98,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
-            binding.timePlay.text = "@string/time_00_00"
+            binding.timePlay.text = "00:00"
         }
     }
     private fun playbackControl() {
@@ -133,7 +133,6 @@ class AudioPlayerActivity : AppCompatActivity() {
                     if (playerState == STATE_PLAYING) {
                         binding.timePlay.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
                         handler.postDelayed(this, HALF_SECOND)
-
                     } else {
                         binding.buttonPlay.setBackgroundResource(R.drawable.button_play)
                         binding.buttonPlay.isEnabled = true
