@@ -1,10 +1,16 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.playlistmaker.App
+import com.example.playlistmaker.ui.medialibrary.MediaLibraryActivity
+import com.example.playlistmaker.PREFERENCES
+import com.example.playlistmaker.ui.search.SearchActivity
+import com.example.playlistmaker.ui.setting.SettingsActivity
+import com.example.playlistmaker.UserPreferences
 import com.example.playlistmaker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

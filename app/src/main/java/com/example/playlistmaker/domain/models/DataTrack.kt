@@ -1,11 +1,7 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.domain.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-
-class TrackResult(
-    val results: List<Track>,
-)
 
 @Parcelize
 data class Track(
