@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.medialibrary
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,6 @@ import android.os.Bundle
 import com.example.playlistmaker.databinding.ActivityMediaLibraryBinding
 import java.util.*
 
-@Suppress("DEPRECATION")
 class MediaLibraryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMediaLibraryBinding
@@ -16,8 +15,6 @@ class MediaLibraryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
     }
 

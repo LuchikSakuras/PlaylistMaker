@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.search
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -14,7 +14,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.data.network.ITunesApi
+import com.example.playlistmaker.PREFERENCES
+import com.example.playlistmaker.TRACK_KEY
+import com.example.playlistmaker.data.model.TrackResponse
+import com.example.playlistmaker.UserPreferences
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.ui.audioplayer.AudioPlayerActivity
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -205,10 +212,10 @@ class SearchActivity : AppCompatActivity() {
         if (binding.inputEditText.text.isNotEmpty()) {
             binding.progressBar.isVisible = true
             api.search(binding.inputEditText.text.toString())
-                .enqueue(object : Callback<TrackResult> {
+                .enqueue(object : Callback<TrackResponse> {
                     @SuppressLint("NotifyDataSetChanged")
                     override fun onResponse(
-                        call: Call<TrackResult>, response: Response<TrackResult>,
+                        call: Call<TrackResponse>, response: Response<TrackResponse>,
                     ) {
                         binding.progressBar.isVisible = false
                         if (response.code() == 200) {
@@ -229,7 +236,7 @@ class SearchActivity : AppCompatActivity() {
                         }
                     }
 
-                    override fun onFailure(call: Call<TrackResult>, t: Throwable) {
+                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                         binding.progressBar.isVisible = false
                         showPlaceholderError()
                     }
