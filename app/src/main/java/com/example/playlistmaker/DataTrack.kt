@@ -1,16 +1,13 @@
 package com.example.playlistmaker
 
-import android.content.SharedPreferences
-import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 class TrackResult(
-    val resultCount: Int,
     val results: List<Track>,
 )
 
+@Parcelize
 data class Track(
     val trackName: String,
     val artistName: String,
@@ -20,5 +17,6 @@ data class Track(
     val releaseDate: String,
     val primaryGenreName: String,
     val country: String,
-)
+    val previewUrl: String,
+) : Parcelable
 

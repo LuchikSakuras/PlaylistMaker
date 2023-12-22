@@ -1,57 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/main_background_color"
-    android:orientation="vertical">
+    android:background="?attr/blue_to_black">
 
-    <TextView
-        style="@style/mainScreenTextStyle"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dp_12"
-        android:paddingTop="@dimen/dp_10"
-        android:text="@string/app_name"
-        android:textColor="@color/white" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/dp_16">
+        app:layout_constraintGuide_begin="@dimen/dp_16" />
 
-        <Button
-            android:id="@+id/button_search"
-            style="@style/mainButtonsStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_weight="1"
-            android:text="@string/search"
-            app:icon="@drawable/light_mode" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp_16" />
 
-        <Button
-            android:id="@+id/button_media_library"
-            style="@style/mainButtonsStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_16"
-            android:layout_weight="1"
-            android:text="@string/media_library"
-            app:icon="@drawable/music" />
+    <TextView
+        android:id="@+id/title"
+        style="@style/title_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginBottom="@dimen/dp_40"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button_settings"
-            style="@style/mainButtonsStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_16"
-            android:layout_marginBottom="@dimen/dp_12"
-            android:layout_weight="1"
-            android:text="@string/settings"
-            app:icon="@drawable/setting" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/title_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="81dp" />
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/buttonSearch"
+        style="@style/mainButtonsStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/search"
+        app:icon="@drawable/light_mode"
+        app:layout_constraintBottom_toTopOf="@id/buttonMediaLibrary"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/title_border" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/buttonMediaLibrary"
+        style="@style/mainButtonsStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="@string/media_library"
+        app:icon="@drawable/music"
+        app:layout_constraintBottom_toTopOf="@id/buttonSettings"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/buttonSearch" />
+
+    <Button
+        android:id="@+id/buttonSettings"
+        style="@style/mainButtonsStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_28"
+        android:text="@string/settings"
+        app:icon="@drawable/setting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/buttonMediaLibrary" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

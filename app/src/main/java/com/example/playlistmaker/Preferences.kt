@@ -15,18 +15,14 @@ class UserPreferences {
 
     fun writeStoryList(sharedPreferences: SharedPreferences, storyList: ArrayList<Track>) {
         val json = Gson().toJson(storyList)
-        sharedPreferences.edit()
-            .putString(TRACK_LIST_KEY, json)
-            .apply()
+        sharedPreferences.edit().putString(TRACK_LIST_KEY, json).apply()
     }
 
     fun readSwitcher(sharedPreferences: SharedPreferences): Boolean {
         return sharedPreferences.getBoolean(DARK_THEME_KEY, false)
     }
 
-    fun writeSwitcher (sharedPreferences: SharedPreferences, switch: Boolean) {
-        sharedPreferences.edit()
-            .putBoolean(DARK_THEME_KEY, switch)
-            .apply()
+    fun writeSwitcher(sharedPreferences: SharedPreferences, switch: Boolean) {
+        sharedPreferences.edit().putBoolean(DARK_THEME_KEY, switch).apply()
     }
 }

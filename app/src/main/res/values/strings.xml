@@ -27,5 +27,7 @@
     <string name="Year">Год</string>
     <string name="Genre">Жанр</string>
     <string name="Сountry">Страна</string>
+    <string name="pause">пауза</string>
+    <string name="time_00_00">00:00</string>
 
 </resources>

@@ -5,15 +5,16 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.databinding.ActivitySearchBinding
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -23,181 +24,193 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class SearchActivity : AppCompatActivity(){
+class SearchActivity : AppCompatActivity() {
 
     private var trackList = ArrayList<Track>()
     private var storyList = ArrayList<Track>()
 
-    private val adapter = TrackAdapter{
-       // goToLibrary(it)
-       addToHistory(it)
+    private val adapter = TrackAdapter {
+        addToHistory(it)
     }
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(
-            OkHttpClient.Builder()
-                .addInterceptor(
-                    HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BODY)
-                ).build()
-        )
-        .build()
+    private val retrofit = Retrofit.Builder().baseUrl("https://itunes.apple.com")
+        .addConverterFactory(GsonConverterFactory.create()).client(
+            OkHttpClient.Builder().addInterceptor(
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+            ).build()
+        ).build()
     private val api = retrofit.create(ITunesApi::class.java)
 
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchTextRequest() }
+
     private var searchText: String = ""
-    private lateinit var placeholderNoInternet: LinearLayout
-    private lateinit var nothingWasFound: LinearLayout
-    private lateinit var updateButton: Button
-    private lateinit var searchEditText: EditText
-    private lateinit var clearHistoryButton: Button
-    private lateinit var titleForStoryTextView: TextView
     private lateinit var sharedPrefs: SharedPreferences
     private val userPreferences = UserPreferences()
+    private lateinit var binding: ActivitySearchBinding
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val currentView = this.window.decorView.rootView
-        val clearButton: ImageView = findViewById(R.id.clearIcon)
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        val buttonBack: ImageView = findViewById(R.id.buttonBack)
 
-        placeholderNoInternet = findViewById(R.id.placeholder_no_internet)
-        nothingWasFound = findViewById(R.id.nothing_was_found)
-        updateButton = findViewById(R.id.update_button)
-        searchEditText = findViewById(R.id.inputEditText)
-        clearHistoryButton = findViewById(R.id.clearHistoryButton)
-        titleForStoryTextView = findViewById(R.id.titleForStoryTextView)
         sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         storyList = userPreferences.readStoryList(sharedPrefs)
-
         adapter.trackList = trackList
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        updateButton.setOnClickListener {
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        binding.updateButton.setOnClickListener {
             searchTextRequest()
         }
 
         if (savedInstanceState != null) {
             val searchText = savedInstanceState.getString(SEARCH_TEXT)
-            searchEditText.setText(searchText)
+            binding.inputEditText.setText(searchText)
         }
 
-        buttonBack.setOnClickListener {
+        binding.buttonBack.setOnClickListener {
             finish()
         }
 
-        clearButton.setOnClickListener {
-            searchEditText.setText("")
-            val inputMethodManager =
-                getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+        binding.buttonClear.setOnClickListener {
+            binding.inputEditText.setText("")
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
             trackListClear()
         }
 
-        searchEditText.setOnFocusChangeListener { view, hasFocus ->
-            if (searchEditText.hasFocus() && storyList.isNotEmpty()){
+        binding.inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (binding.inputEditText.hasFocus() && storyList.isNotEmpty()) {
                 showStory()
-                recyclerView.adapter = adapter
+                binding.recyclerView.adapter = adapter
                 adapter.notifyDataSetChanged()
             } else {
                 closeStory()
-                recyclerView.adapter = adapter
+                binding.recyclerView.adapter = adapter
                 adapter.notifyDataSetChanged()
             }
         }
 
-        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+        binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
             //кнопка переноса строки будет заменена на кнопку Done:
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTextRequest()
                 true
-            } else
-                false
+            } else false
         }
 
-        searchEditText.addTextChangedListener(
-            object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int,
-                ) {
+        binding.inputEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int,
+            ) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchText = binding.inputEditText.text.toString()
+                binding.buttonClear.isVisible = !s.isNullOrEmpty()
+
+                if (binding.inputEditText.hasFocus() && s?.isEmpty() == true && storyList.isNotEmpty()) {
+                    showStory()
+                    binding.recyclerView.adapter = adapter
+                    adapter.notifyDataSetChanged()
+                } else {
+                    closeStory()
+                    binding.recyclerView.adapter = adapter
+                    adapter.notifyDataSetChanged()
                 }
+                searchDebounce()
+            }
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    searchText = searchEditText.text.toString()
-                    clearButton.isVisible = !s.isNullOrEmpty()
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
-                    if (searchEditText.hasFocus() && s?.isEmpty()== true && storyList.isNotEmpty()){
-                        showStory()
-                        recyclerView.adapter = adapter
-                        adapter.notifyDataSetChanged()
-                    } else {
-                        closeStory()
-                        recyclerView.adapter = adapter
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-                override fun afterTextChanged(s: Editable?) {}
-            })
-
-        clearHistoryButton.setOnClickListener {
+        binding.clearHistoryButton.setOnClickListener {
             storyList.clear()
             userPreferences.writeStoryList(sharedPrefs, storyList)
             adapter.notifyDataSetChanged()
-            titleForStoryTextView.isVisible = false
-            clearHistoryButton.isVisible = false
+            binding.titleForStoryTextView.isVisible = false
+            binding.clearHistoryButton.isVisible = false
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val searchText = findViewById<EditText>(R.id.inputEditText).text.toString()
+        val searchText = binding.inputEditText.text.toString()
         outState.putString(SEARCH_TEXT, searchText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val searchText = savedInstanceState.getString(SEARCH_TEXT)
-        findViewById<EditText>(R.id.inputEditText).setText(searchText)
+        binding.inputEditText.setText(searchText)
     }
 
     private companion object {
         const val SEARCH_TEXT = "searchText"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun showPlaceholderError() {
         trackListClear()
-        placeholderNoInternet.isVisible = true
-        nothingWasFound.isVisible = false
+        binding.placeholderNoInternet.isVisible = true
+        binding.textNoInternet.isVisible = true
+        binding.updateButton.isVisible = true
+        binding.placeholderNothingWasFound.isVisible = false
+        binding.textNothingWasFound.isVisible = false
     }
 
     private fun showPlaceholderForEmpty() {
         trackListClear()
-        nothingWasFound.isVisible = true
-        placeholderNoInternet.isVisible = false
+        binding.placeholderNothingWasFound.isVisible = true
+        binding.textNothingWasFound.isVisible = true
+        binding.placeholderNoInternet.isVisible = false
+        binding.textNoInternet.isVisible = false
+        binding.updateButton.isVisible = false
     }
 
     private fun closePlaceholder() {
-        placeholderNoInternet.isVisible = false
-        nothingWasFound.isVisible = false
+        binding.placeholderNoInternet.isVisible = false
+        binding.textNoInternet.isVisible = false
+        binding.placeholderNothingWasFound.isVisible = false
+        binding.textNothingWasFound.isVisible = false
+        binding.updateButton.isVisible = false
     }
 
     private fun searchTextRequest() {
-        if (searchEditText.text.isNotEmpty()) {
-            api.search(searchEditText.text.toString())
+        if (binding.inputEditText.text.isNotEmpty()) {
+            binding.progressBar.isVisible = true
+            api.search(binding.inputEditText.text.toString())
                 .enqueue(object : Callback<TrackResult> {
                     @SuppressLint("NotifyDataSetChanged")
                     override fun onResponse(
                         call: Call<TrackResult>, response: Response<TrackResult>,
                     ) {
+                        binding.progressBar.isVisible = false
                         if (response.code() == 200) {
                             trackListClear()
                             closePlaceholder()
@@ -206,63 +219,73 @@ class SearchActivity : AppCompatActivity(){
                                 trackList.addAll(tracksResults)
                                 adapter.notifyDataSetChanged()
                             } else {
+                                binding.progressBar.isVisible = false
                                 showPlaceholderForEmpty()
                             }
 
                         } else {
+                            binding.progressBar.isVisible = false
                             showPlaceholderError()
-
                         }
                     }
 
                     override fun onFailure(call: Call<TrackResult>, t: Throwable) {
+                        binding.progressBar.isVisible = false
                         showPlaceholderError()
                     }
                 })
         } else {
             trackListClear()
+            closePlaceholder()
         }
     }
 
-   @SuppressLint("NotifyDataSetChanged")
-   private fun addToHistory(track: Track) {
-        if (!storyList.contains(track)){
+    @SuppressLint("NotifyDataSetChanged")
+    private fun addToHistory(track: Track) {
+        if (!storyList.contains(track)) {
             if (storyList.size == 10) {
                 storyList.removeLast()
-                    goToLibrary(track)
+                goToPlayer(track)
             } else {
-                goToLibrary(track)
+                goToPlayer(track)
             }
         } else {
             storyList.remove(track)
-            goToLibrary(track)
+            goToPlayer(track)
         }
     }
 
-    private fun goToLibrary(track: Track){
+    private fun goToPlayer(track: Track) {
         addStoryList(track)
-        val intent = Intent(this@SearchActivity, MediaLibraryActivity::class.java)
-        intent.putExtra("trackName", track.trackName)
-        Log.e("trackname", track.trackName)
-        intent.putExtra("artistName", track.artistName)
-        intent.putExtra("trackTimeMillis", track.trackTimeMillis)
-        intent.putExtra("artworkUrl100", track.artworkUrl100)
-        intent.putExtra("collectionName", track.collectionName)
-        intent.putExtra("releaseDate", track.releaseDate)
-        intent.putExtra("primaryGenreName", track.primaryGenreName)
-        intent.putExtra("country", track.country)
-        startActivity(intent)
+
+        val trackData = Track(
+            track.trackName,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country,
+            track.previewUrl
+        )
+
+        if (clickDebounce()) {
+            val intent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+            intent.putExtra(TRACK_KEY, trackData)
+            startActivity(intent)
+        }
     }
 
-    private fun showStory(){
-        titleForStoryTextView.isVisible = true
-        clearHistoryButton.isVisible = true
+    private fun showStory() {
+        binding.titleForStoryTextView.isVisible = true
+        binding.clearHistoryButton.isVisible = true
         adapter.trackList = storyList
     }
 
-    private fun closeStory(){
-        titleForStoryTextView.isVisible = false
-        clearHistoryButton.isVisible = false
+    private fun closeStory() {
+        binding.titleForStoryTextView.isVisible = false
+        binding.clearHistoryButton.isVisible = false
         adapter.trackList = trackList
     }
 
@@ -278,6 +301,7 @@ class SearchActivity : AppCompatActivity(){
         trackList.clear()
         adapter.notifyDataSetChanged()
     }
+
 }
 
 
