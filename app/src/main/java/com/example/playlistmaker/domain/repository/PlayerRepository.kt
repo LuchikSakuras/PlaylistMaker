@@ -7,7 +7,7 @@ interface PlayerRepository {
 
     fun updateState(): PlayState
 
-    fun preparePlayer (track: Track)
+    fun preparePlayer (previewUrl: String)
 
     fun startPlayer()
 

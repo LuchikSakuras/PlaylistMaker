@@ -1,17 +1,16 @@
-package com.example.playlistmaker.domain.usecase
+package com.example.playlistmaker.domain.Interactor
 
 import com.example.playlistmaker.domain.models.PlayState
-import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.PlayerRepository
 
-class PlayerUseCase(private val playerRepository: PlayerRepository) {
+class PlayerInteractor(private val playerRepository: PlayerRepository) {
 
     fun updateState(): PlayState{
         return playerRepository.updateState()
     }
 
-    fun preparePlayer(track: Track){
-        playerRepository.preparePlayer(track)
+    fun preparePlayer(previewUrl: String){
+        playerRepository.preparePlayer(previewUrl)
     }
 
     fun startPlayer(){
