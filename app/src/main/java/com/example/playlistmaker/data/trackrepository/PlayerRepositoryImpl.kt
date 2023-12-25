@@ -1,5 +1,6 @@
 package com.example.playlistmaker.data.trackrepository
 
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import com.example.playlistmaker.data.model.PlayStateDto
 import com.example.playlistmaker.data.model.TrackDto
@@ -14,21 +15,10 @@ class PlayerRepositoryImpl : PlayerRepository {
     private var callbackForCompletion: (()-> Unit)? = null
     private var callbackForPrepared: (()-> Unit)? = null
 
-    override fun preparePlayer (track: Track) {
+    @SuppressLint("SuspiciousIndentation")
+    override fun preparePlayer (previewUrl: String) {
 
-        val trackDto = TrackDto(
-            track.trackName,
-            track.artistName,
-            track.trackTimeMillis,
-            track.artworkUrl100,
-            track.collectionName,
-            track.releaseDate,
-            track.primaryGenreName,
-            track.country,
-            track.previewUrl
-        )
-
-            mediaPlayer.setDataSource(trackDto.previewUrl)
+            mediaPlayer.setDataSource(previewUrl)
             mediaPlayer.prepareAsync()
             mediaPlayer.setOnPreparedListener {
                 playerStateDto = PlayStateDto.STATE_PREPARED
@@ -64,6 +54,8 @@ class PlayerRepositoryImpl : PlayerRepository {
 
     override fun releaseMediaPlayer(){
         mediaPlayer.release()
+        callbackForCompletion = null
+        callbackForPrepared = null
     }
 
     override fun updateState(): PlayState {

@@ -2,7 +2,6 @@ package com.example.playlistmaker.ui.audioplayer
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
-import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -13,12 +12,13 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.TRACK_KEY
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.data.trackrepository.PlayerRepositoryImpl
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.domain.models.PlayState
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.repository.PlayerRepository
-import com.example.playlistmaker.domain.usecase.PlayerUseCase
+import com.example.playlistmaker.domain.Interactor.PlayerInteractor
 
 import java.util.*
 
@@ -29,8 +29,8 @@ class AudioPlayerActivity : AppCompatActivity() {
     private var playerState = PlayState.STATE_DEFAULT
     private lateinit var handler: Handler
 
-    private val playerRepository: PlayerRepository = PlayerRepositoryImpl()
-    private val playerUseCase = PlayerUseCase(playerRepository)
+
+    private val playerInteractor = Creator.providePlayerInteractor()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,11 +84,11 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        playerUseCase.pausePlayer()
+        playerInteractor.pausePlayer()
     }
     override fun onDestroy() {
         super.onDestroy()
-        playerUseCase.releaseMediaPlayer()
+        playerInteractor.releaseMediaPlayer()
     }
 
   companion object {
@@ -99,13 +99,13 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun preparePlayer() {
         val track = intent.getParcelableExtra<Track>(TRACK_KEY)
         if (track != null) {
-            playerUseCase.preparePlayer(track)
+            playerInteractor.preparePlayer(track.previewUrl)
         }
-        playerUseCase.callbackForCompletion {
+        playerInteractor.callbackForCompletion {
             binding.timePlay.text = "00:00"
         }
 
-        playerUseCase.callbackForPrepared {
+        playerInteractor.callbackForPrepared {
             binding.buttonPlay.isEnabled = true
             playerState = STATE_PREPARED
         }
@@ -116,14 +116,14 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun playbackControl() {
-        playerState = playerUseCase.updateState()
+        playerState = playerInteractor.updateState()
        when(playerState) {
            PlayState.STATE_PLAYING -> {
-               playerUseCase.pausePlayer()
+               playerInteractor.pausePlayer()
                pausePlayer()
             }
            PlayState.STATE_PREPARED, PlayState.STATE_PAUSED -> {
-               playerUseCase.startPlayer()
+               playerInteractor.startPlayer()
                startPlayer()
             }
 
@@ -144,9 +144,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         val myThread =
             object : Runnable {
                 override fun run() {
-                    if (playerUseCase.updateState() == PlayState.STATE_PLAYING)
+                    if (playerInteractor.updateState() == PlayState.STATE_PLAYING)
                     {
-                        val currentPositionInMillis = playerUseCase.updateCurrentPosition()
+                        val currentPositionInMillis = playerInteractor.updateCurrentPosition()
                         binding.timePlay.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPositionInMillis)
                         handler.postDelayed(this, HALF_SECOND)
                     } else {
