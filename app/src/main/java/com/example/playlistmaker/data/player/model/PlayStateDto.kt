@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.model
+package com.example.playlistmaker.data.player.model
 
 enum class PlayStateDto(val state: Int) {
     STATE_DEFAULT(0),

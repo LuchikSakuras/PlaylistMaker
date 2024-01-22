@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.models
+package com.example.playlistmaker.domain.player.models
 
 enum class PlayState (val state: Int) {
     STATE_DEFAULT(0),

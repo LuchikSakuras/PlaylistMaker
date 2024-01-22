@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.util.Creator
 
 const val PREFERENCES = "preferences"
 const val DARK_THEME_KEY = "key_for_theme"
@@ -10,7 +11,7 @@ const val TRACK_KEY = "key_for_track"
 
 class App : Application() {
 
-    var darkTheme = false
+    private var darkTheme = false
 
     override fun onCreate() {
         super.onCreate()

@@ -1,5 +1,4 @@
-package com.example.playlistmaker.domain.repository
-
+package com.example.playlistmaker.domain.player.repository
 
 import com.example.playlistmaker.domain.player.models.PlayState
 
@@ -20,5 +19,9 @@ interface PlayerRepository {
     fun updateCurrentPosition(): Int
 
     fun releaseMediaPlayer()
+
+    fun replaceSize(artworkUrl100: String): String
+
+    fun simpleDateFormat(trackTimeMillis: Int): String
 
 }
