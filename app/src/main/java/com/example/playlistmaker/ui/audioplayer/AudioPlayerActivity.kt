@@ -1,24 +1,20 @@
 package com.example.playlistmaker.ui.audioplayer
 
 import android.annotation.SuppressLint
-import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.TRACK_KEY
-import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.data.trackrepository.PlayerRepositoryImpl
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
-import com.example.playlistmaker.domain.models.PlayState
-import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.domain.repository.PlayerRepository
-import com.example.playlistmaker.domain.Interactor.PlayerInteractor
+import com.example.playlistmaker.domain.player.models.PlayState
+import com.example.playlistmaker.domain.search.models.Track
 
 import java.util.*
 
@@ -29,14 +25,25 @@ class AudioPlayerActivity : AppCompatActivity() {
     private var playerState = PlayState.STATE_DEFAULT
     private lateinit var handler: Handler
 
-
-    private val playerInteractor = Creator.providePlayerInteractor()
-
+    private lateinit var viewModel: AudioPlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this)[AudioPlayerViewModel::class.java]
+
+        viewModel.stateLiveData.observe(this, androidx.lifecycle.Observer {
+            playerState = it
+        })
+        viewModel.positionLiveData.observe(this, androidx.lifecycle.Observer {
+            binding.timePlay.text = it
+        })
+        viewModel.simpleDateFormatLiveData.observe(this, androidx.lifecycle.Observer {
+            binding.trackTimeMillsTrack.text = it
+        })
+
 
         handler = Handler(Looper.getMainLooper())
 
@@ -50,7 +57,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             binding.primaryGenreNameTrack.text = track.primaryGenreName
             binding.countryTrack.text = track.country
 
-            Glide.with(binding.imageTrack.context).load(replaceSize(track))
+            Glide.with(binding.imageTrack.context).load(viewModel.replaceSize(track.artworkUrl100))
                 .placeholder(R.drawable.placeholder).transform(
                     FitCenter(),
                     RoundedCorners(
@@ -58,11 +65,8 @@ class AudioPlayerActivity : AppCompatActivity() {
                     ),
                 ).into(binding.imageTrack)
 
-            binding.trackTimeMillsTrack.text = SimpleDateFormat(
-                "mm:ss", Locale.getDefault()
-            ).format(track.trackTimeMillis.toLong())
-
-            if (track.collectionName.isEmpty()) {
+            viewModel.simpleDateFormat(track.trackTimeMillis)
+            if (track.collectionName!!.isEmpty()) {
                 binding.collectionNameTrack.isVisible = false
                 binding.collectionName.isVisible = false
             } else {
@@ -84,11 +88,11 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        playerInteractor.pausePlayer()
+        viewModel.pausePlayer()
     }
     override fun onDestroy() {
         super.onDestroy()
-        playerInteractor.releaseMediaPlayer()
+        viewModel.releaseMediaPlayer()
     }
 
   companion object {
@@ -99,31 +103,27 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun preparePlayer() {
         val track = intent.getParcelableExtra<Track>(TRACK_KEY)
         if (track != null) {
-            playerInteractor.preparePlayer(track.previewUrl)
+            viewModel.preparePlayer(track.previewUrl)
         }
-        playerInteractor.callbackForCompletion {
+        viewModel.callbackForCompletion {
             binding.timePlay.text = "00:00"
         }
 
-        playerInteractor.callbackForPrepared {
+        viewModel.callbackForPrepared {
             binding.buttonPlay.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            binding.timePlay.text = "00:00"
+            playerState = PlayState.STATE_PREPARED
         }
     }
 
     private fun playbackControl() {
-        playerState = playerInteractor.updateState()
+        viewModel.updateState()
        when(playerState) {
            PlayState.STATE_PLAYING -> {
-               playerInteractor.pausePlayer()
+               viewModel.pausePlayer()
                pausePlayer()
             }
            PlayState.STATE_PREPARED, PlayState.STATE_PAUSED -> {
-               playerInteractor.startPlayer()
+               viewModel.startPlayer()
                startPlayer()
             }
 
@@ -144,10 +144,10 @@ class AudioPlayerActivity : AppCompatActivity() {
         val myThread =
             object : Runnable {
                 override fun run() {
-                    if (playerInteractor.updateState() == PlayState.STATE_PLAYING)
+                    viewModel.updateState()
+                    if (playerState == PlayState.STATE_PLAYING)
                     {
-                        val currentPositionInMillis = playerInteractor.updateCurrentPosition()
-                        binding.timePlay.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPositionInMillis)
+                       viewModel.updatePosition()
                         handler.postDelayed(this, HALF_SECOND)
                     } else {
                         binding.buttonPlay.setBackgroundResource(R.drawable.button_play)
@@ -157,8 +157,4 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
         handler.post(myThread)
     }
-}
-
-fun replaceSize(track: Track): String {
-    return track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 }

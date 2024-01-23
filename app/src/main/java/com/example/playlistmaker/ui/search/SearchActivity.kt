@@ -45,7 +45,7 @@ class SearchActivity : AppCompatActivity() {
             storyList = it
         })
 
-        viewModel.chekStoryList()
+        viewModel.checkStoryList()
 
         val currentView = this.window.decorView.rootView
 

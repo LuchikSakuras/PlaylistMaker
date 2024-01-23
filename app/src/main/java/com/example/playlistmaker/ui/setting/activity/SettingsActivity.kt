@@ -1,27 +1,21 @@
 package com.example.playlistmaker.ui.setting.activity
 
-import android.content.SharedPreferences
+
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
-import com.example.playlistmaker.PREFERENCES
-import com.example.playlistmaker.UserPreferences
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.domain.setting.model.ThemeSettings
-import com.example.playlistmaker.domain.sharing.SharingInteractor
 import com.example.playlistmaker.ui.setting.SettingViewModelFactory
 import com.example.playlistmaker.ui.setting.view_model.SettingsViewModel
-import com.example.playlistmaker.util.Creator
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SettingsViewModel
     private lateinit var binding: ActivitySettingsBinding
-   // private lateinit var sharedPrefs: SharedPreferences
-   // private val userPreferences = UserPreferences()
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -37,7 +31,6 @@ class SettingsActivity : AppCompatActivity() {
             binding.themeSwitcher.isChecked = it
         })
 
-        //sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
 
         binding.settingButtonBack.setOnClickListener {
             finish()
@@ -55,8 +48,6 @@ class SettingsActivity : AppCompatActivity() {
             viewModel.openTerms()
         }
 
-
-       // binding.themeSwitcher.isChecked = userPreferences.readSwitcher(sharedPrefs)
 
         viewModel.themeSwitcherIsChecked()
 

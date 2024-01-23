@@ -8,12 +8,11 @@ import com.example.playlistmaker.PREFERENCES
 import com.example.playlistmaker.data.setting.SettingsRepository
 import com.example.playlistmaker.domain.setting.model.ThemeSettings
 
-class SettingsRepositoryImpl(private val context: Context): SettingsRepository {
+class SettingsRepositoryImpl(private val context: Context) : SettingsRepository {
 
-    private lateinit var sharedPrefs: SharedPreferences
+    private val sharedPrefs = context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     override fun getThemeSettings(): ThemeSettings {
-        sharedPrefs = context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
-        return if (sharedPrefs.getBoolean(DARK_THEME_KEY, false)){
+        return if (sharedPrefs.getBoolean(DARK_THEME_KEY, false)) {
             ThemeSettings(true)
         } else {
             ThemeSettings(false)
@@ -21,7 +20,6 @@ class SettingsRepositoryImpl(private val context: Context): SettingsRepository {
     }
 
     override fun updateThemeSetting(settings: ThemeSettings) {
-        sharedPrefs = context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
         sharedPrefs.edit().putBoolean(DARK_THEME_KEY, settings.night).apply()
     }
 }

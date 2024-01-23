@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.search.api.TracksInteractor
 import java.util.ArrayList
-import com.example.playlistmaker.data.search.model.TrackDto
 import com.example.playlistmaker.domain.search.models.Track
 import com.example.playlistmaker.domain.search.models.TracksState
 
@@ -18,13 +17,15 @@ class TracksSearchViewModel(private val tracksInteractor: TracksInteractor) : Vi
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val stateLiveData = MutableLiveData<TracksState>()
+    private var stateMutableLiveData = MutableLiveData<TracksState>()
 
-     val storyListLiveData = MutableLiveData<ArrayList<Track>>()
+    private var storyMutableListLiveData = MutableLiveData<ArrayList<Track>>()
+    val storyListLiveData: LiveData<ArrayList<Track>>
+        get() = storyMutableListLiveData
 
-    fun observeState(): LiveData<TracksState> = stateLiveData
-    fun chekStoryList() {
-        storyListLiveData.value = readStoryList()
+    fun observeState(): LiveData<TracksState> = stateMutableLiveData
+    fun checkStoryList() {
+        storyMutableListLiveData.value = readStoryList()
     }
     public override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
@@ -72,7 +73,7 @@ class TracksSearchViewModel(private val tracksInteractor: TracksInteractor) : Vi
     }
 
     private fun renderState(state: TracksState) {
-        stateLiveData.postValue(state)
+        stateMutableLiveData.postValue(state)
     }
 
     fun addToHistory(track: Track){
@@ -84,16 +85,9 @@ class TracksSearchViewModel(private val tracksInteractor: TracksInteractor) : Vi
         tracksInteractor.writeStoryList(storyList)
     }
 
-    fun readStoryList(): ArrayList<Track> {
+    private fun readStoryList(): ArrayList<Track> {
         return tracksInteractor.readStoryList()
     }
-
-
-
-
- /*   fun addToHistory(track: Track, storyList: ArrayList<Track>){
-        tracksInteractor.addToHistory(track, storyList)
-    }*/
 
 
 }

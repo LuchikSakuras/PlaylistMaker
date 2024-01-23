@@ -1,12 +1,16 @@
 package com.example.playlistmaker.ui.main.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.ui.main.MainViewModel
 import com.example.playlistmaker.ui.main.MainViewModelFactory
+import com.example.playlistmaker.ui.medialibrary.MediaLibraryActivity
+import com.example.playlistmaker.ui.search.SearchActivity
+import com.example.playlistmaker.ui.setting.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,15 +28,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.updateTheme()
 
         binding.buttonSearch.setOnClickListener {
-            viewModel.openSearch()
+            val displayIntent = Intent(this, SearchActivity::class.java)
+            startActivity(displayIntent)
         }
 
         binding.buttonMediaLibrary.setOnClickListener {
-            viewModel.openMediaLibrary()
+            val displayIntent = Intent(this, MediaLibraryActivity::class.java)
+            startActivity(displayIntent)
         }
 
         binding.buttonSettings.setOnClickListener {
-            viewModel.openSettings()
+            val displayIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(displayIntent)
         }
 
     }

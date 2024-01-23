@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.audioplayer
 
 import android.icu.text.SimpleDateFormat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.player.models.PlayState
@@ -10,21 +11,29 @@ import java.util.Locale
 class AudioPlayerViewModel : ViewModel() {
 
     private val playerInteractor = Creator.providePlayerInteractor()
-    var stateLiveData = MutableLiveData<PlayState>()
-    var positionLiveData = MutableLiveData<String>()
-    var simpleDateFormatLiveData = MutableLiveData<String>()
 
+    private var stateMutableLiveData = MutableLiveData<PlayState>()
+    val stateLiveData: LiveData<PlayState>
+        get() = stateMutableLiveData
+
+    private var positionMutableLiveData = MutableLiveData<String>()
+    val positionLiveData: LiveData<String>
+        get() = positionMutableLiveData
+
+    private var simpleDateFormatMutableLiveData = MutableLiveData<String>()
+    val simpleDateFormatLiveData: LiveData<String>
+        get() = simpleDateFormatMutableLiveData
 
     fun simpleDateFormat(trackTimeMillis: Int){
-        simpleDateFormatLiveData.value = playerInteractor.simpleDateFormat(trackTimeMillis)
+        simpleDateFormatMutableLiveData.value = playerInteractor.simpleDateFormat(trackTimeMillis)
     }
 
     fun updateState(){
-        stateLiveData.value = playerInteractor.updateState()
+        stateMutableLiveData.value = playerInteractor.updateState()
     }
 
     fun updatePosition(){
-        positionLiveData.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playerInteractor.updateCurrentPosition())
+        positionMutableLiveData.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playerInteractor.updateCurrentPosition())
     }
 
     fun pausePlayer() {
@@ -55,7 +64,5 @@ class AudioPlayerViewModel : ViewModel() {
     fun replaceSize(artworkUrl100: String): String{
         return playerInteractor.replaceSize(artworkUrl100)
     }
-
-
 
 }

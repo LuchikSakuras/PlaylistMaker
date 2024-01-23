@@ -8,16 +8,4 @@ class MainInteractorImpl(private val mainRepository: MainRepository): MainIntera
         mainRepository.updateTheme()
     }
 
-    override fun openSearch() {
-        mainRepository.openSearch()
-    }
-
-    override fun openMediaLibrary() {
-        mainRepository.openMediaLibrary()
-    }
-
-    override fun openSettings() {
-        mainRepository.openSettings()
-    }
-
 }
