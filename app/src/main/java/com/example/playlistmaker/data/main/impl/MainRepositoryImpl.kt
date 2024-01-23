@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.App
 import com.example.playlistmaker.DARK_THEME_KEY
 import com.example.playlistmaker.PREFERENCES
-import com.example.playlistmaker.data.main.MainRepository
+import com.example.playlistmaker.domain.main.MainRepository
 
 class MainRepositoryImpl(private val context: Context): MainRepository {
 

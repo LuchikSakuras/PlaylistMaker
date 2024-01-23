@@ -3,8 +3,6 @@ package com.example.playlistmaker.ui.setting
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmaker.domain.setting.SettingsInteractor
-import com.example.playlistmaker.domain.sharing.SharingInteractor
 import com.example.playlistmaker.ui.setting.view_model.SettingsViewModel
 import com.example.playlistmaker.util.Creator
 

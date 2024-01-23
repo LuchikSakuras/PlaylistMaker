@@ -92,21 +92,9 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
 
         val track = mapTrackDtoToTrack(trackDto)
 
-        val trackData = Track(
-            track.trackName,
-            track.artistName,
-            track.trackTimeMillis,
-            track.artworkUrl100,
-            track.collectionName,
-            track.releaseDate,
-            track.primaryGenreName,
-            track.country,
-            track.previewUrl
-        )
-
         if (clickDebounce()) {
             val intent = Intent(context, AudioPlayerActivity::class.java)
-            intent.putExtra(TRACK_KEY, trackData)
+            intent.putExtra(TRACK_KEY, track)
             context.startActivity(intent)
         }
     }

@@ -11,14 +11,4 @@ class MainViewModel(
         mainInteractor.updateTheme()
     }
 
-    fun openSearch(){
-        mainInteractor.openSearch()
-    }
-    fun openMediaLibrary(){
-        mainInteractor.openMediaLibrary()
-    }
-    fun openSettings(){
-        mainInteractor.openSettings()
-    }
-
 }

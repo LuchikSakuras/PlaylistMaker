@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.main
+package com.example.playlistmaker.domain.main
 
 interface MainRepository {
     fun updateTheme()

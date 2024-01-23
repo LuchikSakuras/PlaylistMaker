@@ -2,7 +2,7 @@ package com.example.playlistmaker.domain.sharing.impl
 
 import android.content.Context
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.sharing.ExternalNavigator
+import com.example.playlistmaker.domain.sharing.ExternalNavigator
 import com.example.playlistmaker.domain.sharing.SharingInteractor
 import com.example.playlistmaker.domain.sharing.model.EmailData
 
