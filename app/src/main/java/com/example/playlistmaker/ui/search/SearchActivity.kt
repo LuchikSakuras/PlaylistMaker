@@ -1,61 +1,34 @@
 package com.example.playlistmaker.ui.search
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.data.network.ITunesApi
-import com.example.playlistmaker.PREFERENCES
-import com.example.playlistmaker.TRACK_KEY
-import com.example.playlistmaker.data.model.TrackResponse
-import com.example.playlistmaker.UserPreferences
 import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.ui.audioplayer.AudioPlayerActivity
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.playlistmaker.domain.search.models.Track
+import com.example.playlistmaker.domain.search.models.TracksState
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySearchBinding
+
     private var trackList = ArrayList<Track>()
     private var storyList = ArrayList<Track>()
-
     private val adapter = TrackAdapter {
-        addToHistory(it)
+        viewModel.addToHistory(it)
     }
-
-    private val retrofit = Retrofit.Builder().baseUrl("https://itunes.apple.com")
-        .addConverterFactory(GsonConverterFactory.create()).client(
-            OkHttpClient.Builder().addInterceptor(
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            ).build()
-        ).build()
-    private val api = retrofit.create(ITunesApi::class.java)
-
-    private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { searchTextRequest() }
-
     private var searchText: String = ""
-    private lateinit var sharedPrefs: SharedPreferences
-    private val userPreferences = UserPreferences()
-    private lateinit var binding: ActivitySearchBinding
+    private var textWatcher: TextWatcher? = null
+
+    private lateinit var viewModel: TracksSearchViewModel
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +36,19 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this, TrackSearchViewModelFactory(this))[TracksSearchViewModel::class.java]
+
+        viewModel.observeState().observe(this) {
+            render(it)
+        }
+        viewModel.storyListLiveData.observe(this, androidx.lifecycle.Observer {
+            storyList = it
+        })
+
+        viewModel.checkStoryList()
+
         val currentView = this.window.decorView.rootView
 
-        sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
-        storyList = userPreferences.readStoryList(sharedPrefs)
         adapter.trackList = trackList
 
         binding.recyclerView.adapter = adapter
@@ -74,7 +56,7 @@ class SearchActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.updateButton.setOnClickListener {
-            searchTextRequest()
+            viewModel.searchTextRequest(searchText)
         }
 
         if (savedInstanceState != null) {
@@ -90,7 +72,8 @@ class SearchActivity : AppCompatActivity() {
             binding.inputEditText.setText("")
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
-            trackListClear()
+            trackList.clear()
+            adapter.notifyDataSetChanged()
         }
 
         binding.inputEditText.setOnFocusChangeListener { view, hasFocus ->
@@ -108,46 +91,57 @@ class SearchActivity : AppCompatActivity() {
         binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
             //кнопка переноса строки будет заменена на кнопку Done:
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTextRequest()
+                viewModel.searchTextRequest(searchText)
                 true
             } else false
         }
 
-        binding.inputEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int,
-            ) {
-            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchText = binding.inputEditText.text.toString()
-                binding.buttonClear.isVisible = !s.isNullOrEmpty()
-
-                if (binding.inputEditText.hasFocus() && s?.isEmpty() == true && storyList.isNotEmpty()) {
-                    showStory()
-                    binding.recyclerView.adapter = adapter
-                    adapter.notifyDataSetChanged()
-                } else {
-                    closeStory()
-                    binding.recyclerView.adapter = adapter
-                    adapter.notifyDataSetChanged()
+        textWatcher =
+            object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) {
                 }
-                searchDebounce()
-            }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    searchText = binding.inputEditText.text.toString()
+                    binding.buttonClear.isVisible = !s.isNullOrEmpty()
 
-            override fun afterTextChanged(s: Editable?) {}
-        })
+                    if (binding.inputEditText.hasFocus() && s?.isEmpty() == true && storyList.isNotEmpty()) {
+                        showStory()
+                        binding.recyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        closeStory()
+                        binding.recyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
+                    }
+                    viewModel.searchDebounce(changedText = s?.toString() ?: "")
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                }
+            }
+        textWatcher?.let { binding.inputEditText.addTextChangedListener(it) }
+
 
         binding.clearHistoryButton.setOnClickListener {
             storyList.clear()
-            userPreferences.writeStoryList(sharedPrefs, storyList)
+            viewModel.writeStoryList(storyList)
             adapter.notifyDataSetChanged()
             binding.titleForStoryTextView.isVisible = false
             binding.clearHistoryButton.isVisible = false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
+        viewModel.onCleared()
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -164,124 +158,62 @@ class SearchActivity : AppCompatActivity() {
 
     private companion object {
         const val SEARCH_TEXT = "searchText"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+    private fun render(state: TracksState) {
+        when(state) {
+            is TracksState.Loading -> showLoading()
+            is TracksState.Error -> showError()
+            is TracksState.Empty -> showEmpty()
+            is TracksState.Content -> showContent(state.tracks)
         }
-        return current
     }
 
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showContent(newTracksList: ArrayList<Track>) {
+        binding.recyclerView.isVisible = true
+        binding.progressBar.isVisible = false
+        binding.placeholderNoInternet.isVisible = false
+        binding.textNoInternet.isVisible = false
+        binding.updateButton.isVisible = false
+        binding.placeholderNothingWasFound.isVisible = false
+        binding.textNothingWasFound.isVisible = false
+        adapter.trackList.clear()
+        adapter.trackList.addAll(newTracksList)
+        adapter.notifyDataSetChanged()
     }
 
-    private fun showPlaceholderError() {
-        trackListClear()
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showError() {
+        trackList.clear()
+        adapter.notifyDataSetChanged()
         binding.placeholderNoInternet.isVisible = true
         binding.textNoInternet.isVisible = true
         binding.updateButton.isVisible = true
         binding.placeholderNothingWasFound.isVisible = false
         binding.textNothingWasFound.isVisible = false
+        binding.progressBar.isVisible = false
     }
 
-    private fun showPlaceholderForEmpty() {
-        trackListClear()
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showEmpty() {
+        trackList.clear()
+        adapter.notifyDataSetChanged()
         binding.placeholderNothingWasFound.isVisible = true
         binding.textNothingWasFound.isVisible = true
         binding.placeholderNoInternet.isVisible = false
         binding.textNoInternet.isVisible = false
         binding.updateButton.isVisible = false
+        binding.progressBar.isVisible = false
     }
 
-    private fun closePlaceholder() {
+    private fun showLoading() {
+        binding.progressBar.isVisible = true
         binding.placeholderNoInternet.isVisible = false
         binding.textNoInternet.isVisible = false
+        binding.updateButton.isVisible = false
         binding.placeholderNothingWasFound.isVisible = false
         binding.textNothingWasFound.isVisible = false
-        binding.updateButton.isVisible = false
-    }
-
-    private fun searchTextRequest() {
-        if (binding.inputEditText.text.isNotEmpty()) {
-            binding.progressBar.isVisible = true
-            api.search(binding.inputEditText.text.toString())
-                .enqueue(object : Callback<TrackResponse> {
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun onResponse(
-                        call: Call<TrackResponse>, response: Response<TrackResponse>,
-                    ) {
-                        binding.progressBar.isVisible = false
-                        if (response.code() == 200) {
-                            trackListClear()
-                            closePlaceholder()
-                            val tracksResults = response.body()?.results
-                            if (tracksResults?.isNotEmpty() == true) {
-                                trackList.addAll(tracksResults)
-                                adapter.notifyDataSetChanged()
-                            } else {
-                                binding.progressBar.isVisible = false
-                                showPlaceholderForEmpty()
-                            }
-
-                        } else {
-                            binding.progressBar.isVisible = false
-                            showPlaceholderError()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        binding.progressBar.isVisible = false
-                        showPlaceholderError()
-                    }
-                })
-        } else {
-            trackListClear()
-            closePlaceholder()
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun addToHistory(track: Track) {
-        if (!storyList.contains(track)) {
-            if (storyList.size == 10) {
-                storyList.removeLast()
-                goToPlayer(track)
-            } else {
-                goToPlayer(track)
-            }
-        } else {
-            storyList.remove(track)
-            goToPlayer(track)
-        }
-    }
-
-    private fun goToPlayer(track: Track) {
-        addStoryList(track)
-
-        val trackData = Track(
-            track.trackName,
-            track.artistName,
-            track.trackTimeMillis,
-            track.artworkUrl100,
-            track.collectionName,
-            track.releaseDate,
-            track.primaryGenreName,
-            track.country,
-            track.previewUrl
-        )
-
-        if (clickDebounce()) {
-            val intent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
-            intent.putExtra(TRACK_KEY, trackData)
-            startActivity(intent)
-        }
     }
 
     private fun showStory() {
@@ -295,20 +227,6 @@ class SearchActivity : AppCompatActivity() {
         binding.clearHistoryButton.isVisible = false
         adapter.trackList = trackList
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun addStoryList(track: Track) {
-        storyList.add(0, track)
-        adapter.notifyDataSetChanged()
-        userPreferences.writeStoryList(sharedPrefs, storyList)
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun trackListClear() {
-        trackList.clear()
-        adapter.notifyDataSetChanged()
-    }
-
 }
 
 
