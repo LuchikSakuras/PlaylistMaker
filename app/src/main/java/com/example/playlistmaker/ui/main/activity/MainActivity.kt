@@ -4,18 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.ui.main.MainViewModel
-import com.example.playlistmaker.ui.main.MainViewModelFactory
 import com.example.playlistmaker.ui.medialibrary.MediaLibraryActivity
 import com.example.playlistmaker.ui.search.SearchActivity
 import com.example.playlistmaker.ui.setting.activity.SettingsActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    //private lateinit var viewModel: MainViewModel
+    private val viewModel by viewModel<MainViewModel>()
 
     @SuppressLint("WrongViewCast", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
+        //viewModel = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         viewModel.updateTheme()
 

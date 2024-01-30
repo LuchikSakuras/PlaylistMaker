@@ -1,4 +1,5 @@
 package com.example.playlistmaker.ui.main
+/*
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -13,4 +14,4 @@ class MainViewModelFactory(context: Context) : ViewModelProvider.NewInstanceFact
         return MainViewModel(mainInteractor) as T
     }
 
-}
+}*/

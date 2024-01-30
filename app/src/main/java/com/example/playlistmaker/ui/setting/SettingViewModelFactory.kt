@@ -1,5 +1,6 @@
 package com.example.playlistmaker.ui.setting
 
+/*
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,4 +14,4 @@ class SettingViewModelFactory(context: Context) : ViewModelProvider.NewInstanceF
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SettingsViewModel(sharingInteractor, settingsInteractor) as T
     }
-}
+}*/

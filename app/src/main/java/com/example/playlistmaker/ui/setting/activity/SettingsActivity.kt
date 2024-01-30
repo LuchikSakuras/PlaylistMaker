@@ -5,16 +5,16 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.domain.setting.model.ThemeSettings
-import com.example.playlistmaker.ui.setting.SettingViewModelFactory
 import com.example.playlistmaker.ui.setting.view_model.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel by viewModel<SettingsViewModel>()
+    //private lateinit var viewModel: SettingsViewModel
     private lateinit var binding: ActivitySettingsBinding
 
 
@@ -25,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        viewModel = ViewModelProvider(this, SettingViewModelFactory(this))[SettingsViewModel::class.java]
+       // viewModel = ViewModelProvider(this, SettingViewModelFactory(this))[SettingsViewModel::class.java]
 
         viewModel.checkLiveData.observe(this, androidx.lifecycle.Observer {
             binding.themeSwitcher.isChecked = it

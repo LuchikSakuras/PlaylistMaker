@@ -9,12 +9,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.search.models.Track
 import com.example.playlistmaker.domain.search.models.TracksState
 import java.util.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -28,7 +28,9 @@ class SearchActivity : AppCompatActivity() {
     private var searchText: String = ""
     private var textWatcher: TextWatcher? = null
 
-    private lateinit var viewModel: TracksSearchViewModel
+    private val viewModel by viewModel<TracksSearchViewModel>()
+
+//    private lateinit var viewModel: TracksSearchViewModel
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +38,7 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, TrackSearchViewModelFactory(this))[TracksSearchViewModel::class.java]
+  //      viewModel = ViewModelProvider(this, TrackSearchViewModelFactory(this))[TracksSearchViewModel::class.java]
 
         viewModel.observeState().observe(this) {
             render(it)
