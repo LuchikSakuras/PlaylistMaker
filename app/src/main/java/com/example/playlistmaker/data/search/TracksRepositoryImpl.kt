@@ -3,10 +3,9 @@ package com.example.playlistmaker.data.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.PREFERENCES
 import com.example.playlistmaker.TRACK_KEY
 import com.example.playlistmaker.TRACK_LIST_KEY
 import com.example.playlistmaker.data.search.model.TrackDto
@@ -20,11 +19,15 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.ArrayList
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient, private val context: Context) :
+class TracksRepositoryImpl(
+    private val networkClient: NetworkClient,
+    private val context: Context,
+    private val sharedPrefs: SharedPreferences,
+    private val gson: Gson
+) :
     TracksRepository {
 
-    private var sharedPrefs =
-        context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
+    //private var sharedPrefs = context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     private var storyList = readStoryList()
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
@@ -81,7 +84,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
     }
 
     override fun readStoryList(): ArrayList<Track> {
-        val gson = Gson()
+        //  val gson = Gson()
         val json = sharedPrefs.getString(TRACK_LIST_KEY, null)
         val type = object : TypeToken<ArrayList<Track>>() {}.type
         return gson.fromJson(json, type) ?: ArrayList()
@@ -95,6 +98,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
         if (clickDebounce()) {
             val intent = Intent(context, AudioPlayerActivity::class.java)
             intent.putExtra(TRACK_KEY, track)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
     }

@@ -8,7 +8,7 @@ import com.example.playlistmaker.domain.player.models.PlayState
 import com.example.playlistmaker.domain.player.repository.PlayerRepository
 import java.util.Locale
 
-class PlayerRepositoryImpl : PlayerRepository {
+class PlayerRepositoryImpl() : PlayerRepository {
 
     private val mediaPlayer = MediaPlayer()
     private var playerStateDto = PlayStateDto.STATE_DEFAULT
@@ -52,7 +52,7 @@ class PlayerRepositoryImpl : PlayerRepository {
     }
 
     override fun releaseMediaPlayer(){
-        mediaPlayer.release()
+        mediaPlayer.reset()
         callbackForCompletion = null
         callbackForPrepared = null
     }

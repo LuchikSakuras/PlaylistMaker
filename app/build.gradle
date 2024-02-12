@@ -44,7 +44,10 @@ android {
 
 
 dependencies {
+    //Koin
+    implementation ("io.insert-koin:koin-android:3.3.0")
     implementation "androidx.core:core-ktx:1.9.0"
+    //Moxy
     def moxyVersion = '2.2.2'
     implementation "com.github.moxy-community:moxy:$moxyVersion"
     implementation "com.github.moxy-community:moxy-android:$moxyVersion"

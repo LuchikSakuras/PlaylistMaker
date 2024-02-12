@@ -4,13 +4,13 @@ import android.icu.text.SimpleDateFormat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.playlistmaker.domain.player.interactor.PlayerInteractor
 import com.example.playlistmaker.domain.player.models.PlayState
-import com.example.playlistmaker.util.Creator
 import java.util.Locale
 
-class AudioPlayerViewModel : ViewModel() {
+class AudioPlayerViewModel( private val playerInteractor: PlayerInteractor) : ViewModel() {
 
-    private val playerInteractor = Creator.providePlayerInteractor()
+   // private val playerInteractor = Creator.providePlayerInteractor()
 
     private var stateMutableLiveData = MutableLiveData<PlayState>()
     val stateLiveData: LiveData<PlayState>

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -15,6 +14,7 @@ import com.example.playlistmaker.TRACK_KEY
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.domain.player.models.PlayState
 import com.example.playlistmaker.domain.search.models.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import java.util.*
 
@@ -24,15 +24,17 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
     private var playerState = PlayState.STATE_DEFAULT
     private lateinit var handler: Handler
+    private val viewModel by viewModel<AudioPlayerViewModel>()
 
-    private lateinit var viewModel: AudioPlayerViewModel
+   // private lateinit var viewModel: AudioPlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[AudioPlayerViewModel::class.java]
+
+       // viewModel = ViewModelProvider(this)[AudioPlayerViewModel::class.java]
 
         viewModel.stateLiveData.observe(this, androidx.lifecycle.Observer {
             playerState = it
@@ -50,7 +52,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         val track = intent.getParcelableExtra<Track>(TRACK_KEY)
 
         if (track != null) {
-            preparePlayer()
+                preparePlayer()
             binding.trackName.text = track.trackName
             binding.artistName.text = track.artistName
             binding.releaseDateTrack.text = track.releaseDate.substring(0, 4)
