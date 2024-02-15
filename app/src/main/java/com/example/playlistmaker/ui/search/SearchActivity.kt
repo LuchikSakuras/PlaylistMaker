@@ -30,15 +30,11 @@ class SearchActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<TracksSearchViewModel>()
 
-//    private lateinit var viewModel: TracksSearchViewModel
-
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-  //      viewModel = ViewModelProvider(this, TrackSearchViewModelFactory(this))[TracksSearchViewModel::class.java]
 
         viewModel.observeState().observe(this) {
             render(it)
