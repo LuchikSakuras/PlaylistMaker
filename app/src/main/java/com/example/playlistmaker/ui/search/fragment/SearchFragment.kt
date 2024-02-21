@@ -1,24 +1,30 @@
-package com.example.playlistmaker.ui.search
+package com.example.playlistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.search.models.Track
 import com.example.playlistmaker.domain.search.models.TracksState
-import java.util.*
+import com.example.playlistmaker.ui.search.TrackAdapter
+import com.example.playlistmaker.ui.search.view_model.TracksSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.ArrayList
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
 
     private var trackList = ArrayList<Track>()
     private var storyList = ArrayList<Track>()
@@ -30,28 +36,34 @@ class SearchActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<TracksSearchViewModel>()
 
-    @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewModel.observeState().observe(this) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
-        viewModel.storyListLiveData.observe(this, androidx.lifecycle.Observer {
+        viewModel.storyListLiveData.observe(viewLifecycleOwner, Observer {
             storyList = it
         })
 
         viewModel.checkStoryList()
 
-        val currentView = this.window.decorView.rootView
+        val currentView = requireActivity().window.decorView.rootView
 
         adapter.trackList = trackList
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.updateButton.setOnClickListener {
             viewModel.searchTextRequest(searchText)
@@ -62,13 +74,9 @@ class SearchActivity : AppCompatActivity() {
             binding.inputEditText.setText(searchText)
         }
 
-        binding.buttonBack.setOnClickListener {
-            finish()
-        }
-
         binding.buttonClear.setOnClickListener {
             binding.inputEditText.setText("")
-            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager = requireActivity().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
             trackList.clear()
             adapter.notifyDataSetChanged()
@@ -133,13 +141,13 @@ class SearchActivity : AppCompatActivity() {
             binding.titleForStoryTextView.isVisible = false
             binding.clearHistoryButton.isVisible = false
         }
+        
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
         viewModel.onCleared()
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -148,9 +156,9 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(SEARCH_TEXT, searchText)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val searchText = savedInstanceState.getString(SEARCH_TEXT)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        val searchText = savedInstanceState?.getString(SEARCH_TEXT)
         binding.inputEditText.setText(searchText)
     }
 
@@ -225,6 +233,5 @@ class SearchActivity : AppCompatActivity() {
         binding.clearHistoryButton.isVisible = false
         adapter.trackList = trackList
     }
+
 }
-
-

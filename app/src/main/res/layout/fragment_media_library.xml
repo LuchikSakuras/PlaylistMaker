@@ -5,30 +5,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/white_to_black">
-
-    <ImageButton
-        android:id="@+id/button_back"
-        style="@style/backButtonsStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_4"
-        android:layout_marginTop="@dimen/dp_4"
-        android:contentDescription="@string/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back" />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/white_to_black"
+    tools:context="com.example.playlistmaker.ui.medialibrary.fragment.MediaLibraryFragment">
 
     <TextView
         android:id="@+id/search_header"
         style="@style/title_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_14"
         android:text="@string/media_library"
-        app:layout_constraintBottom_toBottomOf="@id/button_back"
-        app:layout_constraintStart_toEndOf="@id/button_back"
-        app:layout_constraintTop_toTopOf="@id/button_back" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayot"
@@ -39,7 +29,7 @@
         app:tabTextColor="?attr/black_to_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_back" />
+        app:layout_constraintTop_toBottomOf="@id/search_header" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
