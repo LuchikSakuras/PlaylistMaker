@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -20,11 +21,13 @@ import com.example.playlistmaker.domain.search.models.TracksState
 import com.example.playlistmaker.ui.search.TrackAdapter
 import com.example.playlistmaker.ui.search.view_model.TracksSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.ArrayList
+import java.util.Objects
+
 
 class SearchFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private  var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private var trackList = ArrayList<Track>()
     private var storyList = ArrayList<Track>()
@@ -41,7 +44,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -73,6 +76,7 @@ class SearchFragment : Fragment() {
             val searchText = savedInstanceState.getString(SEARCH_TEXT)
             binding.inputEditText.setText(searchText)
         }
+
 
         binding.buttonClear.setOnClickListener {
             binding.inputEditText.setText("")
@@ -144,10 +148,12 @@ class SearchFragment : Fragment() {
         
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
         viewModel.onCleared()
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -13,7 +13,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var binding: FrafmentSettingsBinding
+    private var _binding: FrafmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onCreateView(
@@ -21,7 +23,7 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FrafmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FrafmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -51,6 +53,11 @@ class SettingsFragment : Fragment() {
                 (activity?.applicationContext as App).switchTheme(checked)
                 viewModel.updateThemeSetting(ThemeSettings(checked))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onStop() {

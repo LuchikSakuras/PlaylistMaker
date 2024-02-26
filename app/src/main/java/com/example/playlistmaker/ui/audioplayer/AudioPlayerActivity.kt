@@ -97,15 +97,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
   companion object {
         private const val HALF_SECOND = 500L
+        private const val ZERO_VALUE = "00:00"
     }
 
-    @SuppressLint("SetTextI18n")
+
     private fun preparePlayer(track: Track) {
-        if (track != null) {
-            viewModel.preparePlayer(track.previewUrl)
-        }
+        viewModel.preparePlayer(track.previewUrl)
         viewModel.callbackForCompletion {
-            binding.timePlay.text = "00:00"
+            binding.timePlay.text = ZERO_VALUE
         }
 
         viewModel.callbackForPrepared {

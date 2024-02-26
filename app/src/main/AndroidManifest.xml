@@ -21,9 +21,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.search.fragment.SearchFragment"
-            android:windowSoftInputMode="adjustResize"
             android:exported="false"
-            android:screenOrientation="sensor"
             android:theme="@style/Theme.MyApp" />
         <activity
             android:name=".ui.medialibrary.fragment.MediaLibraryFragment"
@@ -37,6 +35,7 @@
             android:theme="@style/Theme.MyApp" />
         <activity
             android:name=".ui.root.RootActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.MyApp">
