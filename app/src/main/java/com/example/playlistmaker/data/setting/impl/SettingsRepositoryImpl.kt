@@ -10,7 +10,6 @@ class SettingsRepositoryImpl(
     private val sharedPrefs: SharedPreferences
 ) : SettingsRepository {
 
-    //private val sharedPrefs = context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     override fun getThemeSettings(): ThemeSettings {
         return if (sharedPrefs.getBoolean(DARK_THEME_KEY, false)) {
             ThemeSettings(true)

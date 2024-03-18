@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_to_black"
-    tools:context=".ui.medialibrary.MediaLibraryActivity">
+    tools:context="com.example.playlistmaker.ui.audioplayer.AudioPlayerActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/info_left_border"

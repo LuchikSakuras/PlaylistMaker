@@ -26,7 +26,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var handler: Handler
     private val viewModel by viewModel<AudioPlayerViewModel>()
 
-   // private lateinit var viewModel: AudioPlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +33,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-       // viewModel = ViewModelProvider(this)[AudioPlayerViewModel::class.java]
 
         viewModel.stateLiveData.observe(this, androidx.lifecycle.Observer {
             playerState = it
@@ -52,7 +50,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         val track = intent.getParcelableExtra<Track>(TRACK_KEY)
 
         if (track != null) {
-                preparePlayer()
+                preparePlayer(track)
             binding.trackName.text = track.trackName
             binding.artistName.text = track.artistName
             binding.releaseDateTrack.text = track.releaseDate.substring(0, 4)
@@ -99,16 +97,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
   companion object {
         private const val HALF_SECOND = 500L
+        private const val ZERO_VALUE = "00:00"
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun preparePlayer() {
-        val track = intent.getParcelableExtra<Track>(TRACK_KEY)
-        if (track != null) {
-            viewModel.preparePlayer(track.previewUrl)
-        }
+
+    private fun preparePlayer(track: Track) {
+        viewModel.preparePlayer(track.previewUrl)
         viewModel.callbackForCompletion {
-            binding.timePlay.text = "00:00"
+            binding.timePlay.text = ZERO_VALUE
         }
 
         viewModel.callbackForPrepared {

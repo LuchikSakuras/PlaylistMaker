@@ -10,8 +10,6 @@ import java.util.Locale
 
 class AudioPlayerViewModel( private val playerInteractor: PlayerInteractor) : ViewModel() {
 
-   // private val playerInteractor = Creator.providePlayerInteractor()
-
     private var stateMutableLiveData = MutableLiveData<PlayState>()
     val stateLiveData: LiveData<PlayState>
         get() = stateMutableLiveData

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.main.repository
 
-interface MainRepository {
+interface RootRepository {
     fun updateTheme()
 
 }

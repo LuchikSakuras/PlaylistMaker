@@ -5,37 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_to_black"
-    android:orientation="vertical">
-
-    <ImageButton
-        android:id="@+id/button_back"
-        style="@style/backButtonsStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_4"
-        android:layout_marginTop="@dimen/dp_4"
-        android:contentDescription="@string/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back" />
+    android:orientation="vertical"
+    tools:context="com.example.playlistmaker.ui.search.fragment.SearchFragment">
 
     <TextView
         android:id="@+id/search_header"
         style="@style/title_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginStart="@dimen/dp_16"
         android:text="@string/search_text"
-        app:layout_constraintBottom_toBottomOf="@id/button_back"
-        app:layout_constraintStart_toEndOf="@id/button_back"
-        app:layout_constraintTop_toTopOf="@id/button_back" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
         android:id="@+id/relative_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp_16"
-        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_20"
         android:background="@drawable/round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

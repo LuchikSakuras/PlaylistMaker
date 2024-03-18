@@ -27,7 +27,6 @@ class TracksRepositoryImpl(
 ) :
     TracksRepository {
 
-    //private var sharedPrefs = context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     private var storyList = readStoryList()
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
@@ -84,7 +83,6 @@ class TracksRepositoryImpl(
     }
 
     override fun readStoryList(): ArrayList<Track> {
-        //  val gson = Gson()
         val json = sharedPrefs.getString(TRACK_LIST_KEY, null)
         val type = object : TypeToken<ArrayList<Track>>() {}.type
         return gson.fromJson(json, type) ?: ArrayList()

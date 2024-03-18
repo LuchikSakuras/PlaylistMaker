@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.playlistmaker.App
 import com.example.playlistmaker.DARK_THEME_KEY
-import com.example.playlistmaker.domain.main.repository.MainRepository
+import com.example.playlistmaker.domain.main.repository.RootRepository
 
-class MainRepositoryImpl(private val context: Context, private val sharedPrefs: SharedPreferences) :
-    MainRepository {
-
-    // private val sharedPrefs = context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
+class RootRepositoryImpl(private val context: Context, private val sharedPrefs: SharedPreferences) :
+    RootRepository {
 
     override fun updateTheme() {
         if (readIsThemeDark()) {

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_to_black"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.playlistmaker.ui.setting.fragment.SettingsFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_border"
@@ -21,26 +22,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/dp_18" />
 
-    <ImageButton
-        android:id="@+id/setting_button_back"
-        style="@style/backButtonsStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_4"
-        android:layout_marginTop="@dimen/dp_4"
-        android:contentDescription="@string/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back" />
-
     <TextView
         style="@style/title_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_14"
         android:text="@string/settings"
-        app:layout_constraintStart_toEndOf="@id/setting_button_back"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline

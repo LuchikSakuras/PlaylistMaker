@@ -20,22 +20,22 @@
             android:screenOrientation="sensor"
             android:exported="false" />
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name=".ui.search.fragment.SearchFragment"
+            android:exported="false"
+            android:theme="@style/Theme.MyApp" />
+        <activity
+            android:name=".ui.medialibrary.fragment.MediaLibraryFragment"
             android:exported="false"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.MyApp" />
         <activity
-            android:name=".ui.medialibrary.MediaLibraryActivity"
+            android:name=".ui.setting.fragment.SettingsFragment"
             android:exported="false"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.MyApp" />
         <activity
-            android:name=".ui.setting.activity.SettingsActivity"
-            android:exported="false"
-            android:screenOrientation="sensor"
-            android:theme="@style/Theme.MyApp" />
-        <activity
-            android:name=".ui.main.activity.MainActivity"
+            android:name=".ui.root.RootActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:screenOrientation="sensor"
             android:theme="@style/Theme.MyApp">
