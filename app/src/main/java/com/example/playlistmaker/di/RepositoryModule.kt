@@ -27,7 +27,7 @@ val repositoryModule = module {
     }
 
     single<TracksRepository> {
-        TracksRepositoryImpl(get(), androidContext(), get(),  get())
+        TracksRepositoryImpl(get(), get(),  get())
     }
 
     single<PlayerRepository> {

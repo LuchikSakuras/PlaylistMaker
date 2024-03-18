@@ -17,47 +17,47 @@ import com.example.playlistmaker.ui.audioplayer.AudioPlayerActivity
 import com.example.playlistmaker.util.Resource
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.util.ArrayList
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val context: Context,
     private val sharedPrefs: SharedPreferences,
     private val gson: Gson
 ) :
     TracksRepository {
 
     private var storyList = readStoryList()
-    private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
-    override fun search(expression: String): Resource<ArrayList<Track>> {
+    override fun search(expression: String): Flow<Resource<ArrayList<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
 
         when (response.resultCode) {
             -1 -> {
-                return Resource.Error(-1)
+                emit(Resource.Error(-1))
             }
 
             200 -> {
-                val tracks = ArrayList<Track>()
-                (response as TracksSearchResponse).results.mapTo(tracks) {
-                    Track(
-                        it.trackName ?: "",
-                        it.artistName ?: "",
-                        it.trackTimeMillis ?: 0,
-                        it.artworkUrl100 ?: "",
-                        it.collectionName ?: "",
-                        it.releaseDate ?: "",
-                        it.primaryGenreName ?: "",
-                        it.country ?: "",
-                        it.previewUrl ?: ""
-                    )
+                with(response as TracksSearchResponse) {
+                    val data = results.map {
+                        Track(
+                            it.trackName ?: "",
+                            it.artistName ?: "",
+                            it.trackTimeMillis ?: 0,
+                            it.artworkUrl100 ?: "",
+                            it.collectionName ?: "",
+                            it.releaseDate ?: "",
+                            it.primaryGenreName ?: "",
+                            it.country ?: "",
+                            it.previewUrl ?: ""
+                        )
+                    } as ArrayList<Track>
+                    emit(Resource.Success(data))
                 }
-                return Resource.Success(tracks)
             }
 
             else -> {
-                return Resource.Error(-2)
+                emit(Resource.Error(-2))
             }
         }
     }
@@ -67,13 +67,13 @@ class TracksRepositoryImpl(
         if (!storyList.contains(track)) {
             if (storyList.size == 10) {
                 storyList.removeLast()
-                goToPlayer(trackDto)
+                addStoryList(trackDto)
             } else {
-                goToPlayer(trackDto)
+                addStoryList(trackDto)
             }
         } else {
             storyList.remove(track)
-            goToPlayer(trackDto)
+            addStoryList(trackDto)
         }
     }
 
@@ -87,20 +87,6 @@ class TracksRepositoryImpl(
         val type = object : TypeToken<ArrayList<Track>>() {}.type
         return gson.fromJson(json, type) ?: ArrayList()
     }
-
-    private fun goToPlayer(trackDto: TrackDto) {
-        addStoryList(trackDto)
-
-        val track = mapTrackDtoToTrack(trackDto)
-
-        if (clickDebounce()) {
-            val intent = Intent(context, AudioPlayerActivity::class.java)
-            intent.putExtra(TRACK_KEY, track)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        }
-    }
-
 
     @SuppressLint("NotifyDataSetChanged")
     private fun addStoryList(trackDto: TrackDto) {
@@ -138,21 +124,6 @@ class TracksRepositoryImpl(
             trackDto.previewUrl
         )
     }
-
-
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-
-    private companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
-
 
 }
 
