@@ -101,7 +101,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val HALF_SECOND = 500L
+        private const val TIMER_DELAY = 300L
         private const val ZERO_VALUE = "00:00"
     }
 
@@ -152,7 +152,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.updateState()
         timerJob = lifecycleScope.launch {
             while (playerState == PlayState.STATE_PLAYING) {
-                delay(HALF_SECOND)
+                delay(TIMER_DELAY)
                 viewModel.updatePosition()
                 viewModel.updateState()
             }
