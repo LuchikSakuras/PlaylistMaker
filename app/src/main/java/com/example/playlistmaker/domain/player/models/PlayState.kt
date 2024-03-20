@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.player.models
 
-enum class PlayState (val state: Int) {
+enum class PlayState(val state: Int) {
     STATE_DEFAULT(0),
     STATE_PREPARED(1),
     STATE_PLAYING (2),

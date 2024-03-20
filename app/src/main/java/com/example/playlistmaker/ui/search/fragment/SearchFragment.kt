@@ -1,7 +1,10 @@
 package com.example.playlistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -14,28 +17,39 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.TRACK_KEY
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.search.models.Track
 import com.example.playlistmaker.domain.search.models.TracksState
+import com.example.playlistmaker.ui.audioplayer.AudioPlayerActivity
 import com.example.playlistmaker.ui.search.TrackAdapter
 import com.example.playlistmaker.ui.search.view_model.TracksSearchViewModel
+import com.example.playlistmaker.util.debounce
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Objects
 
 
 class SearchFragment : Fragment() {
 
-    private  var _binding: FragmentSearchBinding? = null
+    private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
     private var trackList = ArrayList<Track>()
     private var storyList = ArrayList<Track>()
+
     private val adapter = TrackAdapter {
-        viewModel.addToHistory(it)
+        if (clickDebounce())
+            goToPlayer(it)
     }
+
     private var searchText: String = ""
     private var textWatcher: TextWatcher? = null
+    private var isClickAllowed = true
+
 
     private val viewModel by viewModel<TracksSearchViewModel>()
 
@@ -48,6 +62,7 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,6 +76,7 @@ class SearchFragment : Fragment() {
         viewModel.checkStoryList()
 
         val currentView = requireActivity().window.decorView.rootView
+
 
         adapter.trackList = trackList
 
@@ -80,13 +96,14 @@ class SearchFragment : Fragment() {
 
         binding.buttonClear.setOnClickListener {
             binding.inputEditText.setText("")
-            val inputMethodManager = requireActivity().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                requireActivity().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentView.windowToken, 0)
             trackList.clear()
             adapter.notifyDataSetChanged()
         }
 
-        binding.inputEditText.setOnFocusChangeListener { view, hasFocus ->
+        binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (binding.inputEditText.hasFocus() && storyList.isNotEmpty()) {
                 showStory()
                 binding.recyclerView.adapter = adapter
@@ -116,6 +133,7 @@ class SearchFragment : Fragment() {
                     after: Int,
                 ) {
                 }
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     searchText = binding.inputEditText.text.toString()
                     binding.buttonClear.isVisible = !s.isNullOrEmpty()
@@ -145,14 +163,37 @@ class SearchFragment : Fragment() {
             binding.titleForStoryTextView.isVisible = false
             binding.clearHistoryButton.isVisible = false
         }
-        
+
     }
 
+    private companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val SEARCH_TEXT = "searchText"
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
+    private fun goToPlayer(track: Track) {
+        viewModel.addToHistory(track)
+        val intent = Intent(context, AudioPlayerActivity::class.java)
+        intent.putExtra(TRACK_KEY, track)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         textWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
-        viewModel.onCleared()
         _binding = null
     }
 
@@ -168,12 +209,8 @@ class SearchFragment : Fragment() {
         binding.inputEditText.setText(searchText)
     }
 
-    private companion object {
-        const val SEARCH_TEXT = "searchText"
-    }
-
     private fun render(state: TracksState) {
-        when(state) {
+        when (state) {
             is TracksState.Loading -> showLoading()
             is TracksState.Error -> showError()
             is TracksState.Empty -> showEmpty()

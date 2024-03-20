@@ -5,8 +5,6 @@ import com.example.playlistmaker.PREFERENCES
 import com.example.playlistmaker.data.search.NetworkClient
 import com.example.playlistmaker.data.search.network.ITunesApi
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
-import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
-import com.example.playlistmaker.domain.sharing.ExternalNavigator
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -31,7 +29,4 @@ val dataModule = module {
         RetrofitNetworkClient(androidContext(), get())
     }
 
-    single<ExternalNavigator> {
-        ExternalNavigatorImpl(androidContext())
-    }
 }

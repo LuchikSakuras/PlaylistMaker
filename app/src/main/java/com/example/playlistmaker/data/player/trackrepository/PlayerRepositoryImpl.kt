@@ -61,7 +61,7 @@ class PlayerRepositoryImpl() : PlayerRepository {
         return when (playerStateDto){
             PlayStateDto.STATE_DEFAULT -> PlayState.STATE_DEFAULT
             PlayStateDto.STATE_PREPARED -> PlayState.STATE_PREPARED
-            PlayStateDto.STATE_PLAYING-> PlayState.STATE_PLAYING
+            PlayStateDto.STATE_PLAYING -> PlayState.STATE_PLAYING
             PlayStateDto.STATE_PAUSED -> PlayState.STATE_PAUSED
         }
     }

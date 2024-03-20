@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -14,6 +16,9 @@ import com.example.playlistmaker.TRACK_KEY
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.domain.player.models.PlayState
 import com.example.playlistmaker.domain.search.models.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 import java.util.*
@@ -22,10 +27,10 @@ import java.util.*
 class AudioPlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
-    private var playerState = PlayState.STATE_DEFAULT
-    private lateinit var handler: Handler
-    private val viewModel by viewModel<AudioPlayerViewModel>()
+    private var playerState: PlayState = PlayState.STATE_DEFAULT
 
+    private val viewModel by viewModel<AudioPlayerViewModel>()
+    private var timerJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +50,10 @@ class AudioPlayerActivity : AppCompatActivity() {
         })
 
 
-        handler = Handler(Looper.getMainLooper())
-
         val track = intent.getParcelableExtra<Track>(TRACK_KEY)
 
         if (track != null) {
-                preparePlayer(track)
+            preparePlayer(track)
             binding.trackName.text = track.trackName
             binding.artistName.text = track.artistName
             binding.releaseDateTrack.text = track.releaseDate.substring(0, 4)
@@ -90,13 +93,15 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onPause()
         viewModel.pausePlayer()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         viewModel.releaseMediaPlayer()
+        timerJob = null
     }
 
-  companion object {
-        private const val HALF_SECOND = 500L
+    companion object {
+        private const val TIMER_DELAY = 300L
         private const val ZERO_VALUE = "00:00"
     }
 
@@ -115,44 +120,45 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun playbackControl() {
         viewModel.updateState()
-       when(playerState) {
-           PlayState.STATE_PLAYING -> {
-               viewModel.pausePlayer()
-               pausePlayer()
-            }
-           PlayState.STATE_PREPARED, PlayState.STATE_PAUSED -> {
-               viewModel.startPlayer()
-               startPlayer()
+        when (playerState) {
+            PlayState.STATE_PLAYING -> {
+                pausePlayer()
             }
 
-           else -> {playerState}
-       }
+            PlayState.STATE_PREPARED, PlayState.STATE_PAUSED -> {
+                startPlayer()
+            }
+
+            else -> {
+                playerState
+            }
+        }
     }
 
-  private fun startPlayer() {
+    private fun startPlayer() {
         binding.buttonPlay.setBackgroundResource(R.drawable.button_pause)
-        updateCurrentPosition()
+        viewModel.startPlayer()
+         startTimer()
     }
 
     private fun pausePlayer() {
         binding.buttonPlay.setBackgroundResource(R.drawable.button_play)
+        timerJob?.cancel()
+        viewModel.pausePlayer()
     }
 
-    private fun updateCurrentPosition() {
-        val myThread =
-            object : Runnable {
-                override fun run() {
-                    viewModel.updateState()
-                    if (playerState == PlayState.STATE_PLAYING)
-                    {
-                       viewModel.updatePosition()
-                        handler.postDelayed(this, HALF_SECOND)
-                    } else {
-                        binding.buttonPlay.setBackgroundResource(R.drawable.button_play)
-                        binding.buttonPlay.isEnabled = true
-                    }
-                }
+
+   private fun startTimer() {
+        viewModel.updateState()
+        timerJob = lifecycleScope.launch {
+            while (playerState == PlayState.STATE_PLAYING) {
+                delay(TIMER_DELAY)
+                viewModel.updatePosition()
+                viewModel.updateState()
             }
-        handler.post(myThread)
+            binding.buttonPlay.setBackgroundResource(R.drawable.button_play)
+            binding.buttonPlay.isEnabled = true
+        }
     }
+
 }

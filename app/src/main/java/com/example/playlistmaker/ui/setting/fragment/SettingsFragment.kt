@@ -1,11 +1,14 @@
 package com.example.playlistmaker.ui.setting.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.App
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FrafmentSettingsBinding
 import com.example.playlistmaker.domain.setting.model.ThemeSettings
 import com.example.playlistmaker.ui.setting.view_model.SettingsViewModel
@@ -36,15 +39,33 @@ class SettingsFragment : Fragment() {
         })
 
         binding.buttonShareTheApp.setOnClickListener {
-            viewModel.shareApp()
+            val shareTheApp = getString(R.string.share_the_app)
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.link_the_app))
+            val chooserIntent = Intent.createChooser(shareIntent, shareTheApp)
+            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(chooserIntent)
         }
 
         binding.buttonSupport.setOnClickListener {
-            viewModel.openSupport()
+            val uri: Uri =
+                Uri.parse("mailto:")
+                    .buildUpon()
+                    .appendQueryParameter("to", getString(R.string.support_email))
+                    .appendQueryParameter("subject", getString(R.string.support_title))
+                    .appendQueryParameter("body", getString(R.string.support_message))
+                    .build()
+            val supportIntent = Intent(Intent.ACTION_SENDTO, uri)
+            supportIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(Intent.createChooser(supportIntent, "subject"))
         }
 
         binding.buttonArrowForward.setOnClickListener {
-            viewModel.openTerms()
+            val arrowForwardIntent = Intent(Intent.ACTION_VIEW)
+            arrowForwardIntent.data = Uri.parse(getString(R.string.link_arrow_forward))
+            arrowForwardIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(arrowForwardIntent)
         }
 
         viewModel.themeSwitcherIsChecked()
